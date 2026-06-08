@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://autism-ai.kwalloman.com/sitemap.xml
+
+# Crawl-delay for bots
+Crawl-delay: 10
+
+# Disallow admin paths
+Disallow: /admin/
+Disallow: /api/
