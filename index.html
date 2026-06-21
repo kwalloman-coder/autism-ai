@@ -411,7 +411,8 @@
         <!-- Footer -->
         
     <!-- ====== SITE RATING SECTION ====== -->
-    <section class="landing-section rating-section" role="region" aria-label="تقييم الموقع">
+            <!-- RATING SECTION -->
+    <section class="rating-section" role="region" aria-label="تقييم الموقع">
         <div class="rating-container">
             <div class="rating-content">
                 <div class="rating-icon">⭐</div>
@@ -419,11 +420,11 @@
                 <p class="rating-subtitle">رأيك يهمنا! ساعدنا في تحسين المنصة لتقديم الأفضل لطفلك</p>
 
                 <div class="rating-stars-input" id="ratingStarsInput">
-                    <button class="rating-star-btn" data-value="1" aria-label="1 نجمة" onclick="submitRating(1)">★</button>
-                    <button class="rating-star-btn" data-value="2" aria-label="2 نجمة" onclick="submitRating(2)">★</button>
-                    <button class="rating-star-btn" data-value="3" aria-label="3 نجمة" onclick="submitRating(3)">★</button>
-                    <button class="rating-star-btn" data-value="4" aria-label="4 نجمة" onclick="submitRating(4)">★</button>
-                    <button class="rating-star-btn" data-value="5" aria-label="5 نجمة" onclick="submitRating(5)">★</button>
+                    <button class="rating-star-btn" data-value="1" onclick="submitRating(1)">★</button>
+                    <button class="rating-star-btn" data-value="2" onclick="submitRating(2)">★</button>
+                    <button class="rating-star-btn" data-value="3" onclick="submitRating(3)">★</button>
+                    <button class="rating-star-btn" data-value="4" onclick="submitRating(4)">★</button>
+                    <button class="rating-star-btn" data-value="5" onclick="submitRating(5)">★</button>
                 </div>
 
                 <div class="rating-feedback hidden" id="ratingFeedback">
@@ -437,10 +438,6 @@
                         <div class="rating-stat-item">
                             <span class="rating-stat-value" id="ratingCount">--</span>
                             <span class="rating-stat-label">عدد المقيمين</span>
-                        </div>
-                        <div class="rating-stat-item">
-                            <span class="rating-stat-value" id="ratingLastUpdate">الآن</span>
-                            <span class="rating-stat-label">آخر تحديث</span>
                         </div>
                     </div>
                 </div>
