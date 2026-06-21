@@ -1097,241 +1097,20 @@
         </footer>
     </div>
 
-    <script src="script.js">
+    <script src="script.js"></script>
 
-/* ==================== SITE RATING SYSTEM - GOOGLE SHEETS BACKEND ==================== */
+<!-- ==================== FIXED SITE RATING SYSTEM ==================== -->
+<script>
+/* ==================== SITE RATING SYSTEM - CLEAN VERSION ==================== */
 
-const RATING_API_URL = 'https://script.google.com/macros/s/AKfycbw42w1QJmVNgKq4VYq8qIP7sASfYGESt9porhb5FzJkYn7SvO3FGf-Tc2y4-u0rWA/exec';
+(function() {
+    'use strict';
 
-const USER_RATED_KEY = 'autism_ai_user_rated_v2';
-const USER_ID_KEY = 'autism_ai_user_id';
-
-function generateUserId() {
-    const id = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-    localStorage.setItem(USER_ID_KEY, id);
-    return id;
-}
-
-function getUserId() {
-    return localStorage.getItem(USER_ID_KEY) || generateUserId();
-}
-
-function hasUserRated() {
-    return localStorage.getItem(USER_RATED_KEY) === 'true';
-}
-
-function setUserRated() {
-    localStorage.setItem(USER_RATED_KEY, 'true');
-}
-
-// Submit rating to Google Sheets
-async function submitRating(stars) {
-    if (hasUserRated()) {
-        showRatingToast('لقد قيّمت الموقع مسبقاً! شكراً لك 🙏');
-        return;
-    }
-
-    // Highlight selected stars
-    const starBtns = document.querySelectorAll('.rating-star-btn');
-    starBtns.forEach((btn, idx) => {
-        if (idx < stars) {
-            btn.classList.add('active');
-        } else {
-            btn.classList.remove('active');
-        }
-    });
-
-    window.tempRating = stars;
-    document.getElementById('ratingDetails').classList.remove('hidden');
-    document.getElementById('ratingDetails').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-}
-
-function toggleTag(btn) {
-    btn.classList.toggle('active');
-}
-
-async function submitRatingDetails() {
-    const stars = window.tempRating || 0;
-    const comment = document.getElementById('ratingComment').value.trim();
-    const tags = Array.from(document.querySelectorAll('.rating-tag.active')).map(t => t.textContent.trim());
-
-    if (stars === 0) return;
-
-    // Show loading
-    const submitBtn = document.querySelector('.rating-submit-btn');
-    const originalText = submitBtn.innerHTML;
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
-    submitBtn.disabled = true;
-
-    try {
-        // Send to Google Sheets
-        const response = await fetch(RATING_API_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                stars: stars,
-                comment: comment,
-                tags: tags,
-                userId: getUserId(),
-                userAgent: navigator.userAgent,
-                page: window.location.href,
-                language: navigator.language,
-                timestamp: new Date().toISOString()
-            })
-        });
-
-        // Save locally too as backup
-        saveLocalRating({ stars, comment, tags, timestamp: new Date().toISOString() });
-        setUserRated();
-
-        // Hide input, show feedback
-        document.getElementById('ratingStarsInput').classList.add('hidden');
-        document.getElementById('ratingDetails').classList.add('hidden');
-        document.getElementById('ratingFeedback').classList.remove('hidden');
-
-        // Refresh stats from server
-        await fetchRatingStats();
-
-        // Celebration
-        createConfetti();
-        showRatingToast('شكراً لتقييمك! ⭐ تم الحفظ بنجاح');
-
-        // Analytics
-        if (typeof gtag !== 'undefined') {
-            gtag('event', 'site_rating', { value: stars });
-        }
-
-    } catch (err) {
-        console.error('Rating error:', err);
-        // Fallback: save locally
-        saveLocalRating({ stars, comment, tags, timestamp: new Date().toISOString() });
-        setUserRated();
-
-        document.getElementById('ratingStarsInput').classList.add('hidden');
-        document.getElementById('ratingDetails').classList.add('hidden');
-        document.getElementById('ratingFeedback').classList.remove('hidden');
-        updateRatingDisplay();
-        createConfetti();
-        showRatingToast('تم حفظ التقييم محلياً ✅');
-    } finally {
-        submitBtn.innerHTML = originalText;
-        submitBtn.disabled = false;
-    }
-}
-
-// Local backup storage
-function saveLocalRating(rating) {
-    try {
-        const data = JSON.parse(localStorage.getItem('autism_ai_local_ratings') || '[]');
-        data.push(rating);
-        localStorage.setItem('autism_ai_local_ratings', JSON.stringify(data));
-    } catch(e) {}
-}
-
-// Fetch real stats from Google Sheets
-async function fetchRatingStats() {
-    try {
-        // Try to fetch from Google Sheets (using JSONP approach for CORS)
-        const script = document.createElement('script');
-        const callbackName = 'ratingCallback_' + Date.now();
-
-        window[callbackName] = function(data) {
-            if (data && data.success) {
-                updateRatingDisplayFromServer(data);
-            }
-            delete window[callbackName];
-            if (script.parentNode) script.parentNode.removeChild(script);
-        };
-
-        script.src = RATING_API_URL + '?callback=' + callbackName + '&_=' + Date.now();
-        script.onerror = () => {
-            delete window[callbackName];
-            if (script.parentNode) script.parentNode.removeChild(script);
-            updateRatingDisplay(); // fallback to local
-        };
-
-        // Timeout fallback
-        setTimeout(() => {
-            if (window[callbackName]) {
-                delete window[callbackName];
-                if (script.parentNode) script.parentNode.removeChild(script);
-                updateRatingDisplay();
-            }
-        }, 5000);
-
-        document.head.appendChild(script);
-
-    } catch (err) {
-        console.log('Using local ratings:', err);
-        updateRatingDisplay();
-    }
-}
-
-// Update display from server data
-function updateRatingDisplayFromServer(data) {
-    const avg = parseFloat(data.average) || 0;
-    const count = parseInt(data.count) || 0;
-    const distribution = data.distribution || [0,0,0,0,0];
-
-    document.getElementById('ratingAvg').textContent = avg.toFixed(1);
-    document.getElementById('ratingCount').textContent = count;
-
-    const maxCount = Math.max(...distribution, 1);
-    for (let i = 1; i <= 5; i++) {
-        const bar = document.getElementById('bar' + i);
-        const countEl = document.getElementById('count' + i);
-        if (bar && countEl) {
-            bar.style.width = (distribution[i-1] / maxCount * 100) + '%';
-            countEl.textContent = distribution[i-1];
-        }
-    }
-
-    // Update hero stats too if element exists
-    const heroCount = document.getElementById('heroRatingCount');
-    if (heroCount) heroCount.textContent = count;
-}
-
-// Update display from local data (fallback)
-function updateRatingDisplay() {
-    try {
-        const data = JSON.parse(localStorage.getItem('autism_ai_local_ratings') || '[]');
-        if (data.length === 0) return;
-
-        const avg = data.reduce((a, b) => a + (b.stars || 0), 0) / data.length;
-        const count = data.length;
-        const distribution = [0, 0, 0, 0, 0];
-        data.forEach(r => { if (r.stars >= 1 && r.stars <= 5) distribution[r.stars - 1]++; });
-
-        document.getElementById('ratingAvg').textContent = avg.toFixed(1);
-        document.getElementById('ratingCount').textContent = count;
-
-        const maxCount = Math.max(...distribution, 1);
-        for (let i = 1; i <= 5; i++) {
-            const bar = document.getElementById('bar' + i);
-            const countEl = document.getElementById('count' + i);
-            if (bar && countEl) {
-                bar.style.width = (distribution[i-1] / maxCount * 100) + '%';
-                countEl.textContent = distribution[i-1];
-            }
-        }
-    } catch(e) {}
-}
-
-function showRatingToast(message) {
-    const existing = document.querySelector('.rating-toast');
-    if (existing) existing.remove();
-
-    const toast = document.createElement('div');
-    toast.className = 'rating-toast';
-    toast.textContent = message;
-    document.body.appendChild(toast);
-
-    setTimeout(() => {
-        toast.style.animation = 'toastOut 0.3s ease forwards';
     const RATING_API_URL = 'https://script.google.com/macros/s/AKfycbw42w1QJmVNgKq4VYq8qIP7sASfYGESt9porhb5FzJkYn7SvO3FGf-Tc2y4-u0rWA/exec';
     const USER_RATED_KEY = 'autism_ai_user_rated_v2';
+    const RATINGS_KEY = 'autism_ai_local_ratings';
 
+    // ===== Utility Functions =====
     function hasUserRated() {
         return localStorage.getItem(USER_RATED_KEY) === 'true';
     }
@@ -1340,131 +1119,229 @@ function showRatingToast(message) {
         localStorage.setItem(USER_RATED_KEY, 'true');
     }
 
-    function submitRating(stars) {
-        if (hasUserRated()) {
-            showToast('لقد قيّمت الموقع مسبقاً! شكراً لك 🙏');
-            return;
-        }
-
-        document.querySelectorAll('.rating-star-btn').forEach((btn, idx) => {
-            btn.classList.toggle('active', idx < stars);
-        });
-
-        window.tempRating = stars;
-        document.getElementById('ratingDetails').classList.remove('hidden');
-    }
-
-    function toggleTag(btn) {
-        btn.classList.toggle('active');
-    }
-
-    async function submitRatingDetails() {
-        const stars = window.tempRating || 0;
-        const comment = document.getElementById('ratingComment').value.trim();
-        const tags = Array.from(document.querySelectorAll('.rating-tag.active')).map(t => t.textContent.trim());
-
-        if (stars === 0) return;
-
-        const btn = document.querySelector('.rating-submit-btn');
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
-        btn.disabled = true;
-
-        // Try to send to Google Sheets
-        try {
-            await fetch(RATING_API_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ stars, comment, tags, timestamp: new Date().toISOString() })
-            });
-        } catch(e) {}
-
-        // Always save locally
-        saveLocalRating({ stars, comment, tags, timestamp: new Date().toISOString() });
-        setUserRated();
-
-        document.getElementById('ratingStarsInput').classList.add('hidden');
-        document.getElementById('ratingDetails').classList.add('hidden');
-        document.getElementById('ratingFeedback').classList.remove('hidden');
-
-        updateDisplay();
-        showToast('شكراً لتقييمك! ⭐');
-
-        btn.innerHTML = '<i class="fas fa-paper-plane"></i> إرسال التقييم';
-        btn.disabled = false;
-    }
-
     function saveLocalRating(rating) {
         try {
-            const data = JSON.parse(localStorage.getItem('autism_ai_ratings') || '[]');
+            const data = JSON.parse(localStorage.getItem(RATINGS_KEY) || '[]');
             data.push(rating);
-            localStorage.setItem('autism_ai_ratings', JSON.stringify(data));
-        } catch(e) {}
+            localStorage.setItem(RATINGS_KEY, JSON.stringify(data));
+        } catch(e) {
+            console.error('Error saving rating:', e);
+        }
     }
 
-    function updateDisplay() {
+    function getLocalRatings() {
         try {
-            const data = JSON.parse(localStorage.getItem('autism_ai_ratings') || '[]');
-            if (data.length === 0) return;
-
-            const avg = data.reduce((a, b) => a + (b.stars || 0), 0) / data.length;
-            const count = data.length;
-            const dist = [0, 0, 0, 0, 0];
-            data.forEach(r => { if (r.stars >= 1 && r.stars <= 5) dist[r.stars - 1]++; });
-
-            document.getElementById('ratingAvg').textContent = avg.toFixed(1);
-            document.getElementById('ratingCount').textContent = count;
-            document.getElementById('heroRatingCount').textContent = count;
-
-            const max = Math.max(...dist, 1);
-            for (let i = 1; i <= 5; i++) {
-                const bar = document.getElementById('bar' + i);
-                const cnt = document.getElementById('count' + i);
-                if (bar) bar.style.width = (dist[i-1] / max * 100) + '%';
-                if (cnt) cnt.textContent = dist[i-1];
-            }
-        } catch(e) {}
+            return JSON.parse(localStorage.getItem(RATINGS_KEY) || '[]');
+        } catch(e) {
+            return [];
+        }
     }
 
-    function showToast(msg) {
+    function showToast(msg, duration) {
+        duration = duration || 3000;
         const existing = document.querySelector('.rating-toast');
         if (existing) existing.remove();
 
         const toast = document.createElement('div');
         toast.className = 'rating-toast';
         toast.textContent = msg;
+        toast.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.85);color:#fff;padding:14px 28px;border-radius:12px;font-size:14px;z-index:9999;animation:toastIn 0.3s ease;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);';
         document.body.appendChild(toast);
 
-        setTimeout(() => {
+        setTimeout(function() {
             toast.style.animation = 'toastOut 0.3s ease forwards';
-            setTimeout(() => toast.remove(), 300);
-        }, 3000);
+            setTimeout(function() { toast.remove(); }, 300);
+        }, duration);
     }
 
-    // Initialize
-    document.addEventListener('DOMContentLoaded', function() {
+    function createConfetti() {
+        const colors = ['#fbbf24', '#34d399', '#60a5fa', '#f472b6', '#a78bfa'];
+        for (let i = 0; i < 30; i++) {
+            const conf = document.createElement('div');
+            conf.style.cssText = 'position:fixed;width:8px;height:8px;border-radius:50%;background:' + colors[Math.floor(Math.random()*colors.length)] + ';left:' + (Math.random()*100) + 'vw;top:-10px;z-index:9999;animation:confettiFall ' + (1+Math.random()*2) + 's linear forwards;';
+            document.body.appendChild(conf);
+            setTimeout(function() { conf.remove(); }, 3000);
+        }
+    }
+
+    // ===== Update Display =====
+    function updateDisplay() {
+        try {
+            const data = getLocalRatings();
+            if (data.length === 0) return;
+
+            const avg = data.reduce(function(a, b) { return a + (b.stars || 0); }, 0) / data.length;
+            const count = data.length;
+            const dist = [0, 0, 0, 0, 0];
+            data.forEach(function(r) {
+                if (r.stars >= 1 && r.stars <= 5) dist[r.stars - 1]++;
+            });
+
+            const avgEl = document.getElementById('ratingAvg');
+            const countEl = document.getElementById('ratingCount');
+            const heroCountEl = document.getElementById('heroRatingCount');
+
+            if (avgEl) avgEl.textContent = avg.toFixed(1);
+            if (countEl) countEl.textContent = count;
+            if (heroCountEl) heroCountEl.textContent = count;
+
+            const max = Math.max.apply(null, dist.concat([1]));
+            for (let i = 1; i <= 5; i++) {
+                const bar = document.getElementById('bar' + i);
+                const cnt = document.getElementById('count' + i);
+                if (bar) bar.style.width = (dist[i-1] / max * 100) + '%';
+                if (cnt) cnt.textContent = dist[i-1];
+            }
+        } catch(e) {
+            console.error('Error updating display:', e);
+        }
+    }
+
+    // ===== Submit Rating =====
+    window.submitRating = function(stars) {
+        if (hasUserRated()) {
+            showToast('لقد قيّمت الموقع مسبقاً! شكراً لك 🙏');
+            return;
+        }
+
+        // Highlight selected stars
+        document.querySelectorAll('.rating-star-btn').forEach(function(btn, idx) {
+            btn.classList.toggle('active', idx < stars);
+        });
+
+        window._tempRating = stars;
+        var details = document.getElementById('ratingDetails');
+        if (details) {
+            details.classList.remove('hidden');
+            details.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    };
+
+    // ===== Toggle Tag =====
+    window.toggleTag = function(btn) {
+        btn.classList.toggle('active');
+    };
+
+    // ===== Submit Rating Details =====
+    window.submitRatingDetails = function() {
+        var stars = window._tempRating || 0;
+        var commentEl = document.getElementById('ratingComment');
+        var comment = commentEl ? commentEl.value.trim() : '';
+        var tags = Array.from(document.querySelectorAll('.rating-tag.active')).map(function(t) { return t.textContent.trim(); });
+
+        if (stars === 0) return;
+
+        var btn = document.querySelector('.rating-submit-btn');
+        if (btn) {
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
+            btn.disabled = true;
+        }
+
+        // Save locally FIRST (always works)
+        saveLocalRating({
+            stars: stars,
+            comment: comment,
+            tags: tags,
+            timestamp: new Date().toISOString()
+        });
+        setUserRated();
+
+        // Try to send to Google Sheets (best effort, no-cors)
+        try {
+            fetch(RATING_API_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({
+                    stars: stars,
+                    comment: comment,
+                    tags: tags,
+                    timestamp: new Date().toISOString()
+                })
+            }).catch(function(e) {
+                console.log('Google Sheets sync skipped (no-cors mode)');
+            });
+        } catch(e) {
+            console.log('Google Sheets sync failed:', e);
+        }
+
+        // Update UI
+        var starsInput = document.getElementById('ratingStarsInput');
+        var details = document.getElementById('ratingDetails');
+        var feedback = document.getElementById('ratingFeedback');
+
+        if (starsInput) starsInput.classList.add('hidden');
+        if (details) details.classList.add('hidden');
+        if (feedback) feedback.classList.remove('hidden');
+
+        updateDisplay();
+        createConfetti();
+        showToast('شكراً لتقييمك! ⭐ تم الحفظ بنجاح');
+
+        if (btn) {
+            btn.innerHTML = '<i class="fas fa-paper-plane"></i> إرسال التقييم';
+            btn.disabled = false;
+        }
+
+        // Analytics
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'site_rating', { value: stars });
+        }
+    };
+
+    // ===== Initialize =====
+    function initRating() {
         updateDisplay();
 
         if (hasUserRated()) {
-            document.getElementById('ratingStarsInput')?.classList.add('hidden');
-            document.getElementById('ratingDetails')?.classList.add('hidden');
-            document.getElementById('ratingFeedback')?.classList.remove('hidden');
+            var starsInput = document.getElementById('ratingStarsInput');
+            var details = document.getElementById('ratingDetails');
+            var feedback = document.getElementById('ratingFeedback');
+            if (starsInput) starsInput.classList.add('hidden');
+            if (details) details.classList.add('hidden');
+            if (feedback) feedback.classList.remove('hidden');
         }
 
-        // Hover effects
-        document.querySelectorAll('.rating-star-btn').forEach((btn, idx) => {
-            btn.addEventListener('mouseenter', function() {
-                if (hasUserRated()) return;
-                document.querySelectorAll('.rating-star-btn').forEach((b, i) => {
-                    b.classList.toggle('hover', i <= idx);
+        // Hover effects for stars
+        var starsContainer = document.getElementById('ratingStarsInput');
+        if (starsContainer) {
+            starsContainer.querySelectorAll('.rating-star-btn').forEach(function(btn, idx) {
+                btn.addEventListener('mouseenter', function() {
+                    if (hasUserRated()) return;
+                    starsContainer.querySelectorAll('.rating-star-btn').forEach(function(b, i) {
+                        b.classList.toggle('hover', i <= idx);
+                    });
                 });
             });
-        });
 
-        document.getElementById('ratingStarsInput')?.addEventListener('mouseleave', function() {
-            document.querySelectorAll('.rating-star-btn').forEach(b => b.classList.remove('hover'));
-        });
-    });
+            starsContainer.addEventListener('mouseleave', function() {
+                starsContainer.querySelectorAll('.rating-star-btn').forEach(function(b) {
+                    b.classList.remove('hover');
+                });
+            });
+        }
+    }
+
+    // Add CSS animations
+    var style = document.createElement('style');
+    style.textContent = `
+        @keyframes toastIn { from { opacity:0; transform:translateX(-50%) translateY(20px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }
+        @keyframes toastOut { from { opacity:1; transform:translateX(-50%) translateY(0); } to { opacity:0; transform:translateX(-50%) translateY(20px); } }
+        @keyframes confettiFall { 0% { transform:translateY(0) rotate(0deg); opacity:1; } 100% { transform:translateY(100vh) rotate(720deg); opacity:0; } }
+        .rating-star-btn { transition: all 0.2s ease; cursor: pointer; }
+        .rating-star-btn.active, .rating-star-btn.hover { color: #fbbf24; transform: scale(1.2); }
+        .rating-tag.active { background: var(--accent); color: white; border-color: var(--accent); }
+    `;
+    document.head.appendChild(style);
+
+    // Run init when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initRating);
+    } else {
+        initRating();
+    }
+
+})();
 </script>
 </body>
 </html>
