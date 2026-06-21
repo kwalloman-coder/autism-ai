@@ -3,153 +3,536 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <meta name="description" content="مساعد التوحد الذكي - منصة تدريب تفاعلية للأطفال ذوي اضطراب طيف التوحد بناءً على العلاج السلوكي ABA والعلاج النطقي">
-    <meta name="keywords" content="توحد, ABA, تدريب, أطفال, علاج سلوكي, تطبيق, ذكاء اصطناعي">
+    <meta name="description" content="مساعد التوحد الذكي - منصة تدريب تفاعلية للأطفال ذوي اضطراب طيف التوحد بناءً على العلاج السلوكي ABA والعلاج النطقي. جلسات تفاعلية، ذكاء اصطناعي، وتحليلات متقدمة.">
+    <meta name="keywords" content="توحد, ABA, تدريب, أطفال, علاج سلوكي, تطبيق, ذكاء اصطناعي, التوحد, العلاج النطقي, جلسات تفاعلية, أخصائي توحد">
+    <meta name="author" content="Kwall Oman">
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#090979">
+    <meta name="color-scheme" content="dark light">
 
+    <!-- Open Graph -->
     <meta property="og:title" content="مساعد التوحد الذكي | تدريب ABA تفاعلي">
-    <meta property="og:description" content="منصة تدريب تفاعلية للأطفال ذوي اضطراب طيف التوحد">
-    <meta property="og:url" content="https://autism-ai.app">
+    <meta property="og:description" content="منصة تدريب تفاعلية للأطفال ذوي اضطراب طيف التوحد بناءً على أسس علمية">
+    <meta property="og:image" content="https://autism-ai.kwalloman.com/og-image.jpg">
+    <meta property="og:url" content="https://autism-ai.kwalloman.com">
     <meta property="og:type" content="website">
+    <meta property="og:locale" content="ar_SA">
 
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="مساعد التوحد الذكي">
+    <meta name="twitter:description" content="تدريب ABA تفاعلي للأطفال">
+    <meta name="twitter:image" content="https://autism-ai.kwalloman.com/og-image.jpg">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://autism-ai.kwalloman.com/">
+
+    <!-- PWA -->
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icons/icon-192x192.png">
-    <link rel="canonical" href="https://autism-ai.app/">
 
+    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Tajawal:wght@400;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+    <!-- TensorFlow.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.10.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.0/dist/mobilenet.min.js"></script>
+
     <title>مساعد التوحد الذكي | تدريب ABA تفاعلي للأطفال</title>
     <link rel="stylesheet" href="style.css">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "MedicalWebPage",
+        "name": "مساعد التوحد الذكي",
+        "description": "منصة تدريب تفاعلية للأطفال ذوي اضطراب طيف التوحد",
+        "url": "https://autism-ai.kwalloman.com",
+        "medicalAudience": {
+            "@type": "MedicalAudience",
+            "audienceType": "Patient",
+            "healthCondition": {
+                "@type": "MedicalCondition",
+                "name": "اضطراب طيف التوحد"
+            }
+        },
+        "about": {
+            "@type": "MedicalCondition",
+            "name": "اضطراب طيف التوحد",
+            "description": "منصة تدريبية تفاعلية تستخدم العلاج السلوكي ABA والذكاء الاصطناعي"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Kwall Oman",
+            "url": "https://www.kwalloman.com",
+            "logo": "https://autism-ai.kwalloman.com/logoKwall.png",
+            "sameAs": [
+                "https://x.com/kwall_oman",
+                "https://www.instagram.com/kwalloman",
+                "https://youtube.com/@kwalloman",
+                "https://www.tiktok.com/@knowledge.wall"
+            ]
+        },
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+        }
+    }
+    </script>
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'GA_MEASUREMENT_ID');
+    </script>
 </head>
 <body>
     <a href="#main-content" class="skip-link">تخطي إلى المحتوى الرئيسي</a>
-    <div class="hex-pattern"></div>
+    <div class="hex-pattern" aria-hidden="true"></div>
 
     <!-- ==================== LANDING PAGE ==================== -->
     <div id="landingPage">
-        <nav class="landing-nav" role="navigation">
+        <!-- Navigation -->
+        <nav class="landing-nav" role="navigation" aria-label="التنقل الرئيسي">
             <div class="nav-brand">
                 <a href="https://www.kwalloman.com" aria-label="Kwall Oman">
-                    <img src="logoKwall.png" alt="Kwall Oman" class="nav-logo" onerror="this.style.display='none'">
+                    <img src="logoKwall.png" alt="شعار Kwall Oman" class="nav-logo" loading="lazy">
                 </a>
                 <span class="nav-title">مساعد التوحد الذكي</span>
             </div>
-            <div class="nav-links" id="navLinks">
+            <div class="nav-links">
                 <a href="#features" class="nav-link">المميزات</a>
                 <a href="#how-it-works" class="nav-link">كيف يعمل</a>
+                <a href="#pricing" class="nav-link">الأسعار</a>
+                <a href="blog.html" class="nav-link">المدونة</a>
                 <a href="about.html" class="nav-link">من نحن</a>
+                <a href="faq.html" class="nav-link">الأسئلة</a>
                 <button class="nav-cta" onclick="showApp()">ابدأ الآن مجاناً</button>
             </div>
-            <button class="nav-mobile-toggle" onclick="toggleMobileNav()" aria-label="القائمة">☰</button>
+            <button class="nav-mobile-toggle" aria-label="فتح القائمة" onclick="toggleMobileNav()">
+                <i class="fas fa-bars"></i>
+            </button>
         </nav>
 
-        <section class="hero" role="banner">
-            <div class="hero-content">
-                <div class="hero-badge">
-                    <span>🧠</span>
-                    <span>مدعوم بالذكاء الاصطناعي</span>
-                </div>
-                <h1 class="hero-title">مساعد التوحد الذكي</h1>
-                <p class="hero-subtitle">منصة تدريب تفاعلية للأطفال ذوي اضطراب طيف التوحد، مبنية على أسس علمية (ABA & Speech Therapy)</p>
-                <div class="hero-stats">
-                    <div class="hero-stat"><span class="hero-stat-number">8+</span><span class="hero-stat-label">وحدات تدريبية</span></div>
-                    <div class="hero-stat"><span class="hero-stat-number">50+</span><span class="hero-stat-label">كلمة تفاعلية</span></div>
-                    <div class="hero-stat"><span class="hero-stat-number">20+</span><span class="hero-stat-label">قصة اجتماعية</span></div>
-                    <div class="hero-stat"><span class="hero-stat-number">AI</span><span class="hero-stat-label">مساعد ذكي</span></div>
-                </div>
-                <div class="hero-cta-group">
-                    <button class="hero-cta-primary" onclick="showApp()">
-                        <i class="fas fa-rocket"></i> ابدأ جلسة مجانية
-                    </button>
-                    <button class="hero-cta-secondary" onclick="document.getElementById('how-it-works').scrollIntoView({behavior:'smooth'})">
-                        <i class="fas fa-play-circle"></i> شاهد كيف يعمل
-                    </button>
-                </div>
-                <p class="hero-disclaimer">
-                    <i class="fas fa-info-circle"></i> هذا الموقع أداة تدريبية تكميلية. لا يُغني عن تشخيص الطبيب المتخصص.
-                </p>
+        <!-- Hero Section -->
+        <section class="hero" role="banner" aria-label="القسم الرئيسي">
+        <video class="hero-video-bg" autoplay loop muted playsinline poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 1080'%3E%3Crect fill='%23020024' width='1920' height='1080'/%3E%3C/svg%3E">
+            <source src="video.mp4" type="video/mp4">
+        </video>
+        <div class="hero-video-overlay"></div>
+        <div class="hero-particles" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <div class="hero-content">
+            <div class="hero-badge" data-aos="fade-down">
+                <span class="hero-badge-icon">🧠</span>
+                <span>مدعوم بالذكاء الاصطناعي</span>
             </div>
-            <div class="hero-visual" aria-hidden="true">
-                <div class="hero-emoji-float">🧩</div>
-                <div class="hero-emoji-float" style="animation-delay:1s">🎈</div>
-                <div class="hero-emoji-float" style="animation-delay:2s">⭐</div>
-                <div class="hero-emoji-float" style="animation-delay:0.5s">🌈</div>
-                <div class="hero-emoji-float" style="animation-delay:1.5s">🎨</div>
+            <h1 class="hero-title" data-aos="fade-up" data-aos-delay="100">مساعد التوحد الذكي</h1>
+            <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="200">منصة تدريب تفاعلية للأطفال ذوي اضطراب طيف التوحد، مبنية على أسس علمية (ABA & Speech Therapy) مع دعم الذكاء الاصطناعي</p>
+            <div class="hero-stats" data-aos="fade-up" data-aos-delay="300">
+                <div class="hero-stat">
+                    <span class="hero-stat-number" data-count="8">0</span>
+                    <span class="hero-stat-label">وحدات تدريبية</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="hero-stat-number" data-count="50">0</span>
+                    <span class="hero-stat-label">كلمة تفاعلية</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="hero-stat-number" data-count="20">0</span>
+                    <span class="hero-stat-label">قصة اجتماعية</span>
+                </div>
+                <div class="hero-stat hero-stat-rating">
+                    <span class="hero-stat-number" id="heroRatingCount">--</span>
+                    <span class="hero-stat-label">تقييم مستخدم</span>
+                </div>
             </div>
-        </section>
+            <div class="hero-cta-group" data-aos="fade-up" data-aos-delay="400">
+                <button class="hero-cta-primary" onclick="showApp()">
+                    <i class="fas fa-rocket"></i>
+                    ابدأ جلسة مجانية
+                </button>
+                <button class="hero-cta-secondary" onclick="document.getElementById('how-it-works').scrollIntoView({behavior:'smooth'})">
+                    <i class="fas fa-play-circle"></i>
+                    شاهد كيف يعمل
+                </button>
+            </div>
+            <p class="hero-disclaimer" data-aos="fade-up" data-aos-delay="500">
+                <i class="fas fa-info-circle"></i>
+                هذا الموقع أداة تدريبية تكميلية. لا يُغني عن تشخيص الطبيب المتخصص.
+            </p>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+            <div class="hero-emoji-float">🧩</div>
+            <div class="hero-emoji-float" style="animation-delay:1s">🎈</div>
+            <div class="hero-emoji-float" style="animation-delay:2s">⭐</div>
+            <div class="hero-emoji-float" style="animation-delay:0.5s">🌈</div>
+            <div class="hero-emoji-float" style="animation-delay:1.5s">🎨</div>
+            <div class="hero-emoji-float" style="animation-delay:2.5s">🧸</div>
+        </div>
+        <div class="hero-scroll-indicator" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">
+            <span>اكتشف المزيد</span>
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
 
-        <section id="features" class="landing-section">
+        <!-- Features -->
+        <section id="features" class="landing-section" role="region" aria-label="المميزات">
             <h2 class="section-title">مميزات المنصة</h2>
             <p class="section-subtitle">كل ما يحتاجه طفلك في مكان واحد</p>
             <div class="features-grid">
-                <div class="feature-card"><div class="feature-icon">🎤</div><h3 class="feature-title">التعرف على الكلمات</h3><p class="feature-desc">جلسات تفاعلية لتعلم الكلمات باستخدام الصور والإيموجي والتسجيل الصوتي</p></div>
-                <div class="feature-card"><div class="feature-icon">😊</div><h3 class="feature-title">التعرف على المشاعر</h3><p class="feature-desc">تعلم التعرف على مشاعر الآخرين والتعبير عن المشاعر الشخصية</p></div>
-                <div class="feature-card"><div class="feature-icon">👋</div><h3 class="feature-title">التعليمات الحركية</h3><p class="feature-desc">تعليمات بسيطة لتحسين التواصل الحركي والاستجابة للأوامر</p></div>
-                <div class="feature-card"><div class="feature-icon">💬</div><h3 class="feature-title">المحادثات الموجهة</h3><p class="feature-desc">تدريب على المحادثات اليومية مثل التعريف بالنفس والتعبير عن الحاجات</p></div>
-                <div class="feature-card"><div class="feature-icon">🔢</div><h3 class="feature-title">تسلسل الأنشطة</h3><p class="feature-desc">تعلم ترتيب الخطوات اليومية مثل غسل اليدين وارتداء الملابس</p></div>
-                <div class="feature-card"><div class="feature-icon">📂</div><h3 class="feature-title">التصنيف</h3><p class="feature-desc">تعلم تصنيف الأشياء إلى مجموعات (حيوانات، طعام، ملابس)</p></div>
-                <div class="feature-card"><div class="feature-icon">📖</div><h3 class="feature-title">القصص الاجتماعية</h3><p class="feature-desc">قصص تفاعلية تساعد على فهم المواقف الاجتماعية اليومية</p></div>
-                <div class="feature-card"><div class="feature-icon">🤖</div><h3 class="feature-title">مساعد AI ذكي</h3><p class="feature-desc">ذكاء اصطناعي يجيب على أسئلة الأهل ويقدم نصائح مخصصة</p></div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎤</div>
+                    <h3 class="feature-title">التعرف على الكلمات</h3>
+                    <p class="feature-desc">جلسات تفاعلية لتعلم الكلمات باستخدام الصور والإيموجي والتسجيل الصوتي</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">😊</div>
+                    <h3 class="feature-title">التعرف على المشاعر</h3>
+                    <p class="feature-desc">تعلم التعرف على مشاعر الآخرين والتعبير عن المشاعر الشخصية</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">👋</div>
+                    <h3 class="feature-title">التعليمات الحركية</h3>
+                    <p class="feature-desc">تعليمات بسيطة لتحسين التواصل الحركي والاستجابة للأوامر</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💬</div>
+                    <h3 class="feature-title">المحادثات الموجهة</h3>
+                    <p class="feature-desc">تدريب على المحادثات اليومية مثل التعريف بالنفس والتعبير عن الحاجات</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔢</div>
+                    <h3 class="feature-title">تسلسل الأنشطة</h3>
+                    <p class="feature-desc">تعلم ترتيب الخطوات اليومية مثل غسل اليدين وارتداء الملابس</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📂</div>
+                    <h3 class="feature-title">التصنيف</h3>
+                    <p class="feature-desc">تعلم تصنيف الأشياء إلى مجموعات (حيوانات، طعام، ملابس)</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📖</div>
+                    <h3 class="feature-title">القصص الاجتماعية</h3>
+                    <p class="feature-desc">قصص تفاعلية تساعد على فهم المواقف الاجتماعية اليومية</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3 class="feature-title">مساعد AI ذكي</h3>
+                    <p class="feature-desc">ذكاء اصطناعي يجيب على أسئلة الأهل ويقدم نصائح مخصصة</p>
+                </div>
             </div>
         </section>
 
-        <section id="how-it-works" class="landing-section alt-bg">
+        <!-- How It Works -->
+        <section id="how-it-works" class="landing-section alt-bg" role="region" aria-label="كيف يعمل">
             <h2 class="section-title">كيف يعمل؟</h2>
             <p class="section-subtitle">ثلاث خطوات بسيطة</p>
             <div class="steps-container">
-                <div class="step-card"><div class="step-number">1</div><div class="step-icon">👶</div><h3 class="step-title">أدخل اسم الطفل</h3><p class="step-desc">اختر مدة الجلسة المناسبة (5، 10، أو 15 دقيقة)</p></div>
-                <div class="step-arrow">→</div>
-                <div class="step-card"><div class="step-number">2</div><div class="step-icon">🎯</div><h3 class="step-title">اختر النشاط</h3><p class="step-desc">استكشف الوحدات التدريبية المتنوعة مع طفلك</p></div>
-                <div class="step-arrow">→</div>
-                <div class="step-card"><div class="step-number">3</div><div class="step-icon">📊</div><h3 class="step-title">تابع التقدم</h3><p class="step-desc">راجع لوحة الوالدين لتحليل الأداء والتوصيات</p></div>
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <div class="step-icon">👶</div>
+                    <h3 class="step-title">أدخل اسم الطفل</h3>
+                    <p class="step-desc">اختر مدة الجلسة المناسبة (5، 10، أو 15 دقيقة)</p>
+                </div>
+                <div class="step-arrow" aria-hidden="true">→</div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <div class="step-icon">🎯</div>
+                    <h3 class="step-title">اختر النشاط</h3>
+                    <p class="step-desc">استكشف الوحدات التدريبية المتنوعة مع طفلك</p>
+                </div>
+                <div class="step-arrow" aria-hidden="true">→</div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <div class="step-icon">📊</div>
+                    <h3 class="step-title">تابع التقدم</h3>
+                    <p class="step-desc">راجع لوحة الوالدين لتحليل الأداء والتوصيات</p>
+                </div>
             </div>
         </section>
 
-        <section class="landing-section cta-section">
+        <!-- AI Showcase -->
+        <section class="landing-section" role="region" aria-label="الذكاء الاصطناعي">
+            <h2 class="section-title">مدعوم بأحدث تقنيات AI</h2>
+            <div class="ai-showcase">
+                <div class="ai-showcase-item">
+                    <div class="ai-showcase-icon">🧠</div>
+                    <h3>Google Gemini</h3>
+                    <p>مساعد ذكي يجيب على أسئلة الأهل ويقدم نصائح مخصصة</p>
+                </div>
+                <div class="ai-showcase-item">
+                    <div class="ai-showcase-icon">📷</div>
+                    <h3>TensorFlow.js</h3>
+                    <p>التعرف على الأشياء بالكاميرا للتفاعل مع البيئة المحيطة</p>
+                </div>
+                <div class="ai-showcase-item">
+                    <div class="ai-showcase-icon">🎯</div>
+                    <h3>محرك التوصيات</h3>
+                    <p>يقترح الأنشطة المناسبة بناءً على أداء الطفل</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing -->
+        <section id="pricing" class="landing-section alt-bg" role="region" aria-label="الأسعار">
+            <h2 class="section-title">خطط الأسعار</h2>
+            <p class="section-subtitle">اختر الخطة المناسبة لك</p>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3 class="pricing-name">مجاني</h3>
+                        <div class="pricing-price">$0</div>
+                        <div class="pricing-period">للأبد</div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> 10 كلمات تفاعلية</li>
+                        <li><i class="fas fa-check"></i> 3 قصص اجتماعية</li>
+                        <li><i class="fas fa-check"></i> جلسة 5 دقائق</li>
+                        <li><i class="fas fa-check"></i> الوضع الليلي</li>
+                        <li class="pricing-na"><i class="fas fa-times"></i> AI Chatbot</li>
+                        <li class="pricing-na"><i class="fas fa-times"></i> التقارير المفصلة</li>
+                    </ul>
+                    <button class="pricing-btn pricing-btn-outline" onclick="showApp()">ابدأ مجاناً</button>
+                </div>
+                <div class="pricing-card pricing-recommended">
+                    <div class="pricing-badge">الأكثر شيوعاً</div>
+                    <div class="pricing-header">
+                        <h3 class="pricing-name">أساسي</h3>
+                        <div class="pricing-price">$4.99</div>
+                        <div class="pricing-period">/شهر</div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> 100+ كلمة تفاعلية</li>
+                        <li><i class="fas fa-check"></i> 20+ قصة اجتماعية</li>
+                        <li><i class="fas fa-check"></i> جلسات غير محدودة</li>
+                        <li><i class="fas fa-check"></i> AI Chatbot</li>
+                        <li><i class="fas fa-check"></i> تقارير أسبوعية</li>
+                        <li class="pricing-na"><i class="fas fa-times"></i> API للمؤسسات</li>
+                    </ul>
+                    <button class="pricing-btn pricing-btn-primary">اشترك الآن</button>
+                </div>
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3 class="pricing-name">احترافي</h3>
+                        <div class="pricing-price">$9.99</div>
+                        <div class="pricing-period">/شهر</div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> كل المحتوى</li>
+                        <li><i class="fas fa-check"></i> AI Chatbot متقدم</li>
+                        <li><i class="fas fa-check"></i> تقارير مفصلة + تحليلات</li>
+                        <li><i class="fas fa-check"></i> TensorFlow.js Camera</li>
+                        <li><i class="fas fa-check"></i> دعم فني أولوية</li>
+                        <li class="pricing-na"><i class="fas fa-times"></i> API للمؤسسات</li>
+                    </ul>
+                    <button class="pricing-btn pricing-btn-outline">اشترك الآن</button>
+                </div>
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3 class="pricing-name">مؤسسات</h3>
+                        <div class="pricing-price">$49.99</div>
+                        <div class="pricing-period">/شهر</div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> لوحة مركز متعددة</li>
+                        <li><i class="fas fa-check"></i> 50+ طفل</li>
+                        <li><i class="fas fa-check"></i> API Access</li>
+                        <li><i class="fas fa-check"></i> White-label</li>
+                        <li><i class="fas fa-check"></i> مدير حساب مخصص</li>
+                        <li><i class="fas fa-check"></i> تدريب فريق</li>
+                    </ul>
+                    <button class="pricing-btn pricing-btn-outline">تواصل معنا</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section class="landing-section" role="region" aria-label="آراء المستخدمين">
+            <h2 class="section-title">ما يقوله الأهل</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">"ابني تحسن كثيراً في نطق الكلمات بعد استخدام المنصة لشهرين. الجلسات التفاعلية تجعله متحمساً للتعلم."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">👩</div>
+                        <div>
+                            <div class="testimonial-name">أم أحمد</div>
+                            <div class="testimonial-role">أم لطفل توحد</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">"كأخصائية ABA، أجد المنصة أداة ممتازة لتكملة الجلسات. الأطفال يحبون نظام النجوم والمكافآت."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">👩‍⚕️</div>
+                        <div>
+                            <div class="testimonial-name">د. سارة</div>
+                            <div class="testimonial-role">أخصائية علاج سلوكي</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">"المحتوى العربي المخصص نادر جداً. هذه المنصة ملأت فراغاً كبيراً في الموارد العربية للتوحد."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">👨</div>
+                        <div>
+                            <div class="testimonial-name">خالد</div>
+                            <div class="testimonial-role">أب لطفل توحد</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="landing-section cta-section" role="region" aria-label="ابدأ الآن">
             <h2 class="section-title" style="color:white">جاهز لبدء رحلة التعلم؟</h2>
             <p class="section-subtitle" style="color:rgba(255,255,255,0.8)">جلسة مجانية بالكامل - لا تحتاج بطاقة ائتمان</p>
             <button class="hero-cta-primary" style="margin-top:20px" onclick="showApp()">
-                <i class="fas fa-rocket"></i> ابدأ جلسة مجانية الآن
+                <i class="fas fa-rocket"></i>
+                ابدأ جلسة مجانية الآن
             </button>
         </section>
 
-        <footer class="landing-footer">
+        <!-- Footer -->
+        
+    <!-- ====== SITE RATING SECTION ====== -->
+    <section class="landing-section rating-section" role="region" aria-label="تقييم الموقع">
+        <div class="rating-container">
+            <div class="rating-content">
+                <div class="rating-icon">⭐</div>
+                <h2 class="rating-title">كيف تقيّم تجربتك معنا؟</h2>
+                <p class="rating-subtitle">رأيك يهمنا! ساعدنا في تحسين المنصة لتقديم الأفضل لطفلك</p>
+
+                <div class="rating-stars-input" id="ratingStarsInput">
+                    <button class="rating-star-btn" data-value="1" aria-label="1 نجمة" onclick="submitRating(1)">★</button>
+                    <button class="rating-star-btn" data-value="2" aria-label="2 نجمة" onclick="submitRating(2)">★</button>
+                    <button class="rating-star-btn" data-value="3" aria-label="3 نجمة" onclick="submitRating(3)">★</button>
+                    <button class="rating-star-btn" data-value="4" aria-label="4 نجمة" onclick="submitRating(4)">★</button>
+                    <button class="rating-star-btn" data-value="5" aria-label="5 نجمة" onclick="submitRating(5)">★</button>
+                </div>
+
+                <div class="rating-feedback hidden" id="ratingFeedback">
+                    <div class="rating-feedback-icon">🎉</div>
+                    <p class="rating-feedback-text">شكراً لتقييمك! نقدر مساهمتك في تطوير المنصة</p>
+                    <div class="rating-stats-display">
+                        <div class="rating-stat-item">
+                            <span class="rating-stat-value" id="ratingAvg">--</span>
+                            <span class="rating-stat-label">متوسط التقييم</span>
+                        </div>
+                        <div class="rating-stat-item">
+                            <span class="rating-stat-value" id="ratingCount">--</span>
+                            <span class="rating-stat-label">عدد المقيمين</span>
+                        </div>
+                        <div class="rating-stat-item">
+                            <span class="rating-stat-value" id="ratingLastUpdate">الآن</span>
+                            <span class="rating-stat-label">آخر تحديث</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rating-details hidden" id="ratingDetails">
+                    <textarea id="ratingComment" placeholder="أخبرنا المزيد عن تجربتك (اختياري)..." rows="3"></textarea>
+                    <div class="rating-tags">
+                        <button class="rating-tag" onclick="toggleTag(this)">👶 سهل الاستخدام</button>
+                        <button class="rating-tag" onclick="toggleTag(this)">🎨 محتوى ممتع</button>
+                        <button class="rating-tag" onclick="toggleTag(this)">🧠 مفيد للطفل</button>
+                        <button class="rating-tag" onclick="toggleTag(this)">📱 تصميم رائع</button>
+                        <button class="rating-tag" onclick="toggleTag(this)">🚀 سريع الاستجابة</button>
+                        <button class="rating-tag" onclick="toggleTag(this)">💡 يحتاج تحسين</button>
+                    </div>
+                    <button class="rating-submit-btn" onclick="submitRatingDetails()">
+                        <i class="fas fa-paper-plane"></i> إرسال التقييم
+                    </button>
+                </div>
+            </div>
+
+            <div class="rating-chart">
+                <h3 class="rating-chart-title">توزيع التقييمات</h3>
+                <div class="rating-bars">
+                    <div class="rating-bar-row">
+                        <span class="rating-bar-label">5 ⭐</span>
+                        <div class="rating-bar-track"><div class="rating-bar-fill" id="bar5" style="width:0%"></div></div>
+                        <span class="rating-bar-count" id="count5">0</span>
+                    </div>
+                    <div class="rating-bar-row">
+                        <span class="rating-bar-label">4 ⭐</span>
+                        <div class="rating-bar-track"><div class="rating-bar-fill" id="bar4" style="width:0%"></div></div>
+                        <span class="rating-bar-count" id="count4">0</span>
+                    </div>
+                    <div class="rating-bar-row">
+                        <span class="rating-bar-label">3 ⭐</span>
+                        <div class="rating-bar-track"><div class="rating-bar-fill" id="bar3" style="width:0%"></div></div>
+                        <span class="rating-bar-count" id="count3">0</span>
+                    </div>
+                    <div class="rating-bar-row">
+                        <span class="rating-bar-label">2 ⭐</span>
+                        <div class="rating-bar-track"><div class="rating-bar-fill" id="bar2" style="width:0%"></div></div>
+                        <span class="rating-bar-count" id="count2">0</span>
+                    </div>
+                    <div class="rating-bar-row">
+                        <span class="rating-bar-label">1 ⭐</span>
+                        <div class="rating-bar-track"><div class="rating-bar-fill" id="bar1" style="width:0%"></div></div>
+                        <span class="rating-bar-count" id="count1">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<footer class="landing-footer" role="contentinfo">
             <div class="footer-grid">
                 <div class="footer-brand">
-                    <img src="logoKwall.png" alt="Kwall Oman" class="footer-logo" onerror="this.style.display='none'">
+                    <img src="logoKwall.png" alt="Kwall Oman" class="footer-logo" loading="lazy">
                     <p>منصة تدريب تفاعلية للأطفال ذوي اضطراب طيف التوحد</p>
                     <div class="footer-social">
                         <a href="https://x.com/kwall_oman" target="_blank" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
                         <a href="https://www.instagram.com/kwalloman" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                         <a href="https://youtube.com/@kwalloman" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
                         <a href="https://www.tiktok.com/@knowledge.wall" target="_blank" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                        <a href="https://www.snapchat.com/add/kwalloman" target="_blank" aria-label="Snapchat"><i class="fab fa-snapchat"></i></a>
                     </div>
                 </div>
                 <div class="footer-links">
                     <h4>المنصة</h4>
                     <a href="#features">المميزات</a>
+                    <a href="#pricing">الأسعار</a>
+                    <a href="blog.html">المدونة</a>
                     <a href="about.html">من نحن</a>
-                    <a href="about.html#team">الفريق</a>
                 </div>
                 <div class="footer-links">
                     <h4>المصادر</h4>
+                    <a href="faq.html">الأسئلة الشائعة</a>
+                    <a href="blog.html">دليل الأهل</a>
                     <a href="#">ABA Therapy</a>
                     <a href="#">القصص الاجتماعية</a>
-                    <a href="#">دليل الأهل</a>
                 </div>
                 <div class="footer-links">
                     <h4>القانوني</h4>
                     <a href="#">سياسة الخصوصية</a>
                     <a href="#">شروط الاستخدام</a>
+                    <a href="#">إخلاء المسؤولية الطبية</a>
                     <a href="mailto:kwalloman@gmail.com">تواصل معنا</a>
                 </div>
             </div>
             <div class="footer-bottom">
                 <p>© 2026 Kwall Oman. جميع الحقوق محفوظة.</p>
                 <p class="footer-disclaimer">
-                    <i class="fas fa-exclamation-triangle"></i> هذا الموقع أداة تدريبية تكميلية ولا يُغني عن تشخيص أو علاج الطبيب المتخصص.
+                    <i class="fas fa-exclamation-triangle"></i>
+                    هذا الموقع أداة تدريبية تكميلية ولا يُغني عن تشخيص أو علاج الطبيب المتخصص.
                 </p>
             </div>
         </footer>
@@ -157,54 +540,51 @@
 
     <!-- ==================== APP SCREEN ==================== -->
     <div id="appScreen" class="hidden">
-        <button class="settings-btn" onclick="showAdminLogin()" title="إدارة المحتوى">⚙️</button>
+        <button class="settings-btn" onclick="showAdminLogin()" title="إدارة المحتوى" aria-label="إدارة المحتوى">⚙️</button>
 
         <header class="main-header" id="main-content">
             <div class="header-top-row">
                 <div class="brand-wrapper">
                     <div class="logo">
-                        <a href="https://www.kwalloman.com"><img src="logoKwall.png" alt="شعار الموقع" class="logo" onerror="this.textContent='🧩';this.style.background='var(--accent)'"></a>
+                        <a href="https://www.kwalloman.com" aria-label="Kwall Oman">
+                            <img src="logoKwall.png" alt="شعار الموقع" class="logo">
+                        </a>
                     </div>
                     <h1>مساعد التوحد الذكي</h1>
                 </div>
                 <div style="display:flex;gap:10px;align-items:center;">
-                    <button class="theme-toggle-btn" onclick="toggleTheme()">🌓</button>
-                    <button class="control-btn" onclick="showLanding()" title="العودة للرئيسية"><i class="fas fa-home"></i></button>
+                    <button class="theme-toggle-btn" onclick="toggleTheme()" aria-label="تبديل الوضع الليلي">🌓</button>
+                    <button class="control-btn" onclick="showLanding()" aria-label="العودة للصفحة الرئيسية"><i class="fas fa-home"></i></button>
                 </div>
             </div>
             <p class="subtitle">جلسات تدريبية مبنية على أسس علمية<br> (ABA & Speech Therapy)</p>
         </header>
 
         <div class="container" style="max-width:500px;">
-            <div style="font-size:5rem;margin-bottom:15px;animation:float 3s ease-in-out infinite;">🧩</div>
+            <div style="font-size:5rem;margin-bottom:15px;animation:float 3s ease-in-out infinite;" aria-hidden="true">🧩</div>
             <h2 style="font-size:1.5rem;font-weight:800;margin-bottom:20px;color:white;font-family:'Cairo',sans-serif;">ابدأ جلسة جديدة</h2>
-            <input type="text" id="childName" placeholder="اسم الطفل (مثال: أحمد)" style="margin-bottom:15px;">
+            <input type="text" id="childName" placeholder="اسم الطفل (مثال: أحمد)" style="margin-bottom:15px;" aria-label="اسم الطفل">
             <div style="margin-bottom:15px;">
                 <label style="display:block;color:#ffffffcc;margin-bottom:8px;font-size:14px;">مدة الجلسة</label>
-                <div class="mode-toggle">
-                    <button class="mode-btn" onclick="setDuration(5,this)">5 دقائق</button>
-                    <button class="mode-btn active" onclick="setDuration(10,this)">10 دقائق</button>
-                    <button class="mode-btn" onclick="setDuration(15,this)">15 دقيقة</button>
+                <div class="mode-toggle" role="radiogroup" aria-label="مدة الجلسة">
+                    <button class="mode-btn" onclick="setDuration(5,this)" role="radio" aria-checked="false">5 دقائق</button>
+                    <button class="mode-btn active" onclick="setDuration(10,this)" role="radio" aria-checked="true">10 دقائق</button>
+                    <button class="mode-btn" onclick="setDuration(15,this)" role="radio" aria-checked="false">15 دقيقة</button>
                 </div>
             </div>
-            <button class="btn" onclick="startSession()" style="width:90%;"><i class="fas fa-rocket"></i> ابدأ الجلسة</button>
-            <button class="control-btn" onclick="showParentDashboard()" style="margin-top:15px;width:90%;"><i class="fas fa-chart-line"></i> لوحة متابعة الوالدين</button>
+            <button class="btn" onclick="startSession()" style="width:90%;" aria-label="بدء الجلسة"><i class="fas fa-rocket"></i> ابدأ الجلسة</button>
+            <button class="control-btn" onclick="showParentDashboard()" style="margin-top:15px;width:90%;" aria-label="لوحة متابعة الوالدين"><i class="fas fa-chart-line"></i> لوحة متابعة الوالدين</button>
         </div>
     </div>
 
     <!-- ==================== ADMIN LOGIN ==================== -->
     <div id="adminLoginScreen" class="hidden">
-        <header class="main-header">
-            <div class="header-top-row">
-                <div class="brand-wrapper"><div class="logo">🔒</div><h1>لوحة إدارة المحتوى</h1></div>
-                <button class="logo" onclick="backToApp()" title="العودة"><i class="fas fa-arrow-right"></i></button>
-            </div>
-        </header>
+        <header class="main-header"><div class="header-top-row"><div class="brand-wrapper"><div class="logo" aria-hidden="true">🔒</div><h1>لوحة إدارة المحتوى</h1></div><button class="logo" onclick="backToApp()" aria-label="العودة"><i class="fas fa-arrow-right"></i></button></div></header>
         <div class="container" style="max-width:400px;">
-            <div style="font-size:4rem;margin-bottom:20px;">🔐</div>
+            <div style="font-size:4rem;margin-bottom:20px;" aria-hidden="true">🔐</div>
             <h2 style="font-size:1.3rem;font-weight:800;margin-bottom:20px;color:white;">تسجيل دخول المشرف</h2>
-            <input type="password" id="adminPassword" placeholder="كلمة المرور" style="margin-bottom:15px;">
-            <button class="btn" onclick="checkAdminLogin()" style="width:100%;"><i class="fas fa-lock"></i> دخول</button>
+            <input type="password" id="adminPassword" placeholder="كلمة المرور" style="margin-bottom:15px;" aria-label="كلمة المرور">
+            <button class="btn" onclick="checkAdminLogin()" style="width:100%;" aria-label="دخول"><i class="fas fa-lock"></i> دخول</button>
             <p style="color:#ffffffaa;font-size:13px;margin-top:15px;">كلمة المرور الافتراضية: 1234</p>
         </div>
     </div>
@@ -213,36 +593,42 @@
     <div id="adminDashboard" class="hidden">
         <header class="main-header">
             <div class="header-top-row">
-                <div class="brand-wrapper"><div class="logo">⚙️</div><h1>إدارة المحتوى</h1></div>
-                <button class="logo" onclick="backToApp()" title="العودة"><i class="fas fa-arrow-right"></i></button>
-            </div>
-            <div class="subtitle" style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
-                <button class="control-btn" onclick="exportData()"><i class="fas fa-download"></i> حفظ</button>
-                <button class="control-btn" onclick="document.getElementById('importFile').click()"><i class="fas fa-upload"></i> استيراد</button>
-                <input type="file" id="importFile" class="hidden" accept=".json" onchange="importData(this)">
+                <div class="brand-wrapper">
+                    <div class="logo" aria-hidden="true">⚙️</div>
+                    <h1>إدارة المحتوى</h1>
+                </div>
+                <button class="logo" onclick="backToApp()" aria-label="العودة"><i class="fas fa-arrow-right"></i></button>
+            </div>  
+            <div style="subtitle">
+                <div style="display:flex;gap:10px;">
+                    <button class="control-btn" onclick="exportData()" aria-label="حفظ البيانات"><i class="fas fa-download"></i> حفظ</button>
+                    <button class="control-btn" onclick="document.getElementById('importFile').click()" aria-label="استيراد البيانات"><i class="fas fa-upload"></i> استيراد</button>
+                    <input type="file" id="importFile" class="hidden" accept=".json" onchange="importData(this)" aria-label="ملف الاستيراد">
+                </div>
             </div>
         </header>
         <div class="container">
-            <div class="admin-nav">
-                <button class="admin-nav-btn active" onclick="switchAdminTab('words',this)">📝 الكلمات</button>
-                <button class="admin-nav-btn" onclick="switchAdminTab('emotions',this)">😊 المشاعر</button>
-                <button class="admin-nav-btn" onclick="switchAdminTab('instructions',this)">👋 التعليمات</button>
-                <button class="admin-nav-btn" onclick="switchAdminTab('intraverbals',this)">💬 محادثات</button>
-                <button class="admin-nav-btn" onclick="switchAdminTab('sequences',this)">🔢 تسلسلات</button>
-                <button class="admin-nav-btn" onclick="switchAdminTab('categories',this)">📂 تصنيفات</button>
-                <button class="admin-nav-btn" onclick="switchAdminTab('stories',this)">📖 قصص</button>
-                <button class="admin-nav-btn" onclick="switchAdminTab('settings',this)">⚙️ إعدادات</button>
+            <div class="admin-nav" role="tablist" aria-label="أقسام الإدارة">
+                <button class="admin-nav-btn active" onclick="switchAdminTab('words',this)" role="tab" aria-selected="true">📝 الكلمات</button>
+                <button class="admin-nav-btn" onclick="switchAdminTab('emotions',this)" role="tab" aria-selected="false">😊 المشاعر</button>
+                <button class="admin-nav-btn" onclick="switchAdminTab('instructions',this)" role="tab" aria-selected="false">👋 التعليمات</button>
+                <button class="admin-nav-btn" onclick="switchAdminTab('intraverbals',this)" role="tab" aria-selected="false">💬 محادثات</button>
+                <button class="admin-nav-btn" onclick="switchAdminTab('sequences',this)" role="tab" aria-selected="false">🔢 تسلسلات</button>
+                <button class="admin-nav-btn" onclick="switchAdminTab('categories',this)" role="tab" aria-selected="false">📂 تصنيفات</button>
+                <button class="admin-nav-btn" onclick="switchAdminTab('stories',this)" role="tab" aria-selected="false">📖 قصص</button>
+                <button class="admin-nav-btn" onclick="switchAdminTab('settings',this)" role="tab" aria-selected="false">⚙️ إعدادات</button>
             </div>
 
-            <div id="admin-words" class="admin-tab">
+            <!-- Admin: Words -->
+            <div id="admin-words" class="admin-tab" role="tabpanel">
                 <div class="admin-card">
                     <h3><i class="fas fa-plus-circle"></i> إضافة كلمة جديدة</h3>
                     <div class="form-row">
-                        <input type="text" id="newWordText" placeholder="الكلمة (مثال: تفاحة)">
-                        <input type="text" id="newWordEmoji" placeholder="إيموجي (مثال: 🍎)">
+                        <input type="text" id="newWordText" placeholder="الكلمة (مثال: تفاحة)" aria-label="الكلمة">
+                        <input type="text" id="newWordEmoji" placeholder="إيموجي (مثال: 🍎)" aria-label="الإيموجي">
                     </div>
                     <div class="form-row">
-                        <select id="newWordCategory">
+                        <select id="newWordCategory" aria-label="التصنيف">
                             <option value="food">🍽 طعام</option>
                             <option value="drink">🥤 شراب</option>
                             <option value="animal">🐾 حيوان</option>
@@ -250,14 +636,17 @@
                             <option value="object">📦 شيء</option>
                             <option value="body">🦶 جسم</option>
                             <option value="action">🏃 فعل</option>
+                            <option value="nature">🌳 طبيعة</option>
+                            <option value="school">🏫 مدرسة</option>
+                            <option value="family">👨‍👩‍👧 عائلة</option>
                         </select>
-                        <select id="newWordDifficulty">
+                        <select id="newWordDifficulty" aria-label="الصعوبة">
                             <option value="easy">🟢 سهل</option>
                             <option value="medium">🟡 متوسط</option>
                             <option value="hard">🔴 صعب</option>
                         </select>
                     </div>
-                    <button class="btn btn-sm" onclick="addWord()"><i class="fas fa-plus"></i> إضافة</button>
+                    <button class="btn btn-sm" onclick="addWord()" aria-label="إضافة كلمة"><i class="fas fa-plus"></i> إضافة</button>
                 </div>
                 <div class="admin-card">
                     <h3><i class="fas fa-list"></i> قائمة الكلمات (<span id="wordsCount">0</span>)</h3>
@@ -265,15 +654,16 @@
                 </div>
             </div>
 
-            <div id="admin-emotions" class="admin-tab hidden">
+            <!-- Admin: Emotions -->
+            <div id="admin-emotions" class="admin-tab hidden" role="tabpanel">
                 <div class="admin-card">
                     <h3><i class="fas fa-plus-circle"></i> إضافة مشاعر</h3>
                     <div class="form-row">
-                        <input type="text" id="newEmotionEmoji" placeholder="إيموجي (مثال: 😊)">
-                        <input type="text" id="newEmotionName" placeholder="الاسم (مثال: happy)">
+                        <input type="text" id="newEmotionEmoji" placeholder="إيموجي (مثال: 😊)" aria-label="إيموجي المشاعر">
+                        <input type="text" id="newEmotionName" placeholder="الاسم (مثال: happy)" aria-label="اسم المشاعر">
                     </div>
-                    <input type="text" id="newEmotionText" placeholder="النص بالعربي (مثال: سعيد)" style="margin-bottom:10px;">
-                    <button class="btn btn-sm" onclick="addEmotion()"><i class="fas fa-plus"></i> إضافة</button>
+                    <input type="text" id="newEmotionText" placeholder="النص بالعربي (مثال: سعيد)" style="margin-bottom:10px;" aria-label="النص العربي">
+                    <button class="btn btn-sm" onclick="addEmotion()" aria-label="إضافة مشاعر"><i class="fas fa-plus"></i> إضافة</button>
                 </div>
                 <div class="admin-card">
                     <h3><i class="fas fa-list"></i> قائمة المشاعر</h3>
@@ -281,14 +671,15 @@
                 </div>
             </div>
 
-            <div id="admin-instructions" class="admin-tab hidden">
+            <!-- Admin: Instructions -->
+            <div id="admin-instructions" class="admin-tab hidden" role="tabpanel">
                 <div class="admin-card">
                     <h3><i class="fas fa-plus-circle"></i> إضافة تعليمة</h3>
                     <div class="form-row">
-                        <input type="text" id="newInstIcon" placeholder="إيموجي (مثال: 👃)">
-                        <input type="text" id="newInstText" placeholder="التعليمة (مثال: المس أنفك)">
+                        <input type="text" id="newInstIcon" placeholder="إيموجي (مثال: 👃)" aria-label="إيموجي التعليمة">
+                        <input type="text" id="newInstText" placeholder="التعليمة (مثال: المس أنفك)" aria-label="نص التعليمة">
                     </div>
-                    <button class="btn btn-sm" onclick="addInstruction()"><i class="fas fa-plus"></i> إضافة</button>
+                    <button class="btn btn-sm" onclick="addInstruction()" aria-label="إضافة تعليمة"><i class="fas fa-plus"></i> إضافة</button>
                 </div>
                 <div class="admin-card">
                     <h3><i class="fas fa-list"></i> قائمة التعليمات</h3>
@@ -296,13 +687,14 @@
                 </div>
             </div>
 
-            <div id="admin-intraverbals" class="admin-tab hidden">
+            <!-- Admin: Intraverbals -->
+            <div id="admin-intraverbals" class="admin-tab hidden" role="tabpanel">
                 <div class="admin-card">
                     <h3><i class="fas fa-plus-circle"></i> إضافة محادثة موجهة</h3>
-                    <input type="text" id="newIntraQuestion" placeholder="السؤال (مثال: ما اسمك؟)" style="margin-bottom:10px;">
-                    <input type="text" id="newIntraAnswer" placeholder="الإجابة المتوقعة (مثال: اسمي أحمد)" style="margin-bottom:10px;">
-                    <input type="text" id="newIntraHint" placeholder="تلميح (مثال: قل اسمك)" style="margin-bottom:10px;">
-                    <button class="btn btn-sm" onclick="addIntraverbal()"><i class="fas fa-plus"></i> إضافة</button>
+                    <input type="text" id="newIntraQuestion" placeholder="السؤال (مثال: ما اسمك؟)" style="margin-bottom:10px;" aria-label="السؤال">
+                    <input type="text" id="newIntraAnswer" placeholder="الإجابة المتوقعة (مثال: اسمي أحمد)" style="margin-bottom:10px;" aria-label="الإجابة المتوقعة">
+                    <input type="text" id="newIntraHint" placeholder="تلميح (مثال: قل اسمك)" style="margin-bottom:10px;" aria-label="التلميح">
+                    <button class="btn btn-sm" onclick="addIntraverbal()" aria-label="إضافة محادثة"><i class="fas fa-plus"></i> إضافة</button>
                 </div>
                 <div class="admin-card">
                     <h3><i class="fas fa-list"></i> قائمة المحادثات</h3>
@@ -310,19 +702,20 @@
                 </div>
             </div>
 
-            <div id="admin-sequences" class="admin-tab hidden">
+            <!-- Admin: Sequences -->
+            <div id="admin-sequences" class="admin-tab hidden" role="tabpanel">
                 <div class="admin-card">
                     <h3><i class="fas fa-plus-circle"></i> إضافة تسلسل</h3>
-                    <input type="text" id="newSeqTitle" placeholder="عنوان التسلسل (مثال: غسل اليدين)" style="margin-bottom:10px;">
+                    <input type="text" id="newSeqTitle" placeholder="عنوان التسلسل (مثال: غسل اليدين)" style="margin-bottom:10px;" aria-label="عنوان التسلسل">
                     <div class="form-row">
-                        <input type="text" id="newSeqStep1" placeholder="الخطوة 1 (إيموجي + نص)">
-                        <input type="text" id="newSeqStep2" placeholder="الخطوة 2 (إيموجي + نص)">
+                        <input type="text" id="newSeqStep1" placeholder="الخطوة 1 (إيموجي + نص)" aria-label="الخطوة 1">
+                        <input type="text" id="newSeqStep2" placeholder="الخطوة 2 (إيموجي + نص)" aria-label="الخطوة 2">
                     </div>
                     <div class="form-row">
-                        <input type="text" id="newSeqStep3" placeholder="الخطوة 3 (إيموجي + نص)">
-                        <input type="text" id="newSeqStep4" placeholder="الخطوة 4 (إيموجي + نص) (اختياري)">
+                        <input type="text" id="newSeqStep3" placeholder="الخطوة 3 (إيموجي + نص)" aria-label="الخطوة 3">
+                        <input type="text" id="newSeqStep4" placeholder="الخطوة 4 (إيموجي + نص) (اختياري)" aria-label="الخطوة 4">
                     </div>
-                    <button class="btn btn-sm" onclick="addSequence()"><i class="fas fa-plus"></i> إضافة</button>
+                    <button class="btn btn-sm" onclick="addSequence()" aria-label="إضافة تسلسل"><i class="fas fa-plus"></i> إضافة</button>
                 </div>
                 <div class="admin-card">
                     <h3><i class="fas fa-list"></i> قائمة التسلسلات</h3>
@@ -330,13 +723,14 @@
                 </div>
             </div>
 
-            <div id="admin-categories" class="admin-tab hidden">
+            <!-- Admin: Categories -->
+            <div id="admin-categories" class="admin-tab hidden" role="tabpanel">
                 <div class="admin-card">
                     <h3><i class="fas fa-plus-circle"></i> إضافة تصنيف</h3>
-                    <input type="text" id="newCatName" placeholder="اسم التصنيف (مثال: حيوانات)" style="margin-bottom:10px;">
-                    <input type="text" id="newCatItems" placeholder="العناصر (مفصولة بفاصلة: 🐱,🐕,🐦)" style="margin-bottom:10px;">
-                    <input type="text" id="newCatDistractors" placeholder="المشتتات (مفصولة بفاصلة: 🍎,🚗)" style="margin-bottom:10px;">
-                    <button class="btn btn-sm" onclick="addCategory()"><i class="fas fa-plus"></i> إضافة</button>
+                    <input type="text" id="newCatName" placeholder="اسم التصنيف (مثال: حيوانات)" style="margin-bottom:10px;" aria-label="اسم التصنيف">
+                    <input type="text" id="newCatItems" placeholder="العناصر (مفصولة بفاصلة: 🐱,🐕,🐦)" style="margin-bottom:10px;" aria-label="العناصر">
+                    <input type="text" id="newCatDistractors" placeholder="المشتتات (مفصولة بفاصلة: 🍎,🚗)" style="margin-bottom:10px;" aria-label="المشتتات">
+                    <button class="btn btn-sm" onclick="addCategory()" aria-label="إضافة تصنيف"><i class="fas fa-plus"></i> إضافة</button>
                 </div>
                 <div class="admin-card">
                     <h3><i class="fas fa-list"></i> قائمة التصنيفات</h3>
@@ -344,13 +738,14 @@
                 </div>
             </div>
 
-            <div id="admin-stories" class="admin-tab hidden">
+            <!-- Admin: Stories -->
+            <div id="admin-stories" class="admin-tab hidden" role="tabpanel">
                 <div class="admin-card">
                     <h3><i class="fas fa-plus-circle"></i> إضافة قصة اجتماعية</h3>
-                    <input type="text" id="newStoryTitle" placeholder="عنوان القصة" style="margin-bottom:10px;">
-                    <textarea id="newStoryText" placeholder="نص القصة..." style="margin-bottom:10px;"></textarea>
-                    <input type="text" id="newStoryImage" placeholder="رابط الصورة (أو اتركه فارغاً)" style="margin-bottom:10px;">
-                    <button class="btn btn-sm" onclick="addStory()"><i class="fas fa-plus"></i> إضافة</button>
+                    <input type="text" id="newStoryTitle" placeholder="عنوان القصة" style="margin-bottom:10px;" aria-label="عنوان القصة">
+                    <textarea id="newStoryText" placeholder="نص القصة..." style="margin-bottom:10px;" aria-label="نص القصة"></textarea>
+                    <input type="text" id="newStoryImage" placeholder="رابط الصورة (أو اتركه فارغاً)" style="margin-bottom:10px;" aria-label="رابط الصورة">
+                    <button class="btn btn-sm" onclick="addStory()" aria-label="إضافة قصة"><i class="fas fa-plus"></i> إضافة</button>
                 </div>
                 <div class="admin-card">
                     <h3><i class="fas fa-list"></i> قائمة القصص</h3>
@@ -358,25 +753,38 @@
                 </div>
             </div>
 
-            <div id="admin-settings" class="admin-tab hidden">
+            <!-- Admin: Settings -->
+            <div id="admin-settings" class="admin-tab hidden" role="tabpanel">
                 <div class="admin-card">
                     <h3><i class="fas fa-cog"></i> إعدادات الجلسة</h3>
                     <div class="form-row">
-                        <div><label style="color:#ffffffcc;font-size:14px;">مدة الجلسة الافتراضية (دقائق)</label><input type="number" id="settingDuration" value="10" min="1" max="60"></div>
-                        <div><label style="color:#ffffffcc;font-size:14px;">نجوم المكافأة الأولى</label><input type="number" id="settingReward1" value="5" min="1"></div>
+                        <div>
+                            <label style="color:#ffffffcc;font-size:14px;">مدة الجلسة الافتراضية (دقائق)</label>
+                            <input type="number" id="settingDuration" value="10" min="1" max="60" aria-label="مدة الجلسة">
+                        </div>
+                        <div>
+                            <label style="color:#ffffffcc;font-size:14px;">نجوم المكافأة الأولى</label>
+                            <input type="number" id="settingReward1" value="5" min="1" aria-label="نجوم المكافأة الأولى">
+                        </div>
                     </div>
                     <div class="form-row">
-                        <div><label style="color:#ffffffcc;font-size:14px;">نجوم المكافأة الثانية</label><input type="number" id="settingReward2" value="20" min="1"></div>
-                        <div><label style="color:#ffffffcc;font-size:14px;">نجوم المكافأة الثالثة</label><input type="number" id="settingReward3" value="50" min="1"></div>
+                        <div>
+                            <label style="color:#ffffffcc;font-size:14px;">نجوم المكافأة الثانية</label>
+                            <input type="number" id="settingReward2" value="20" min="1" aria-label="نجوم المكافأة الثانية">
+                        </div>
+                        <div>
+                            <label style="color:#ffffffcc;font-size:14px;">نجوم المكافأة الثالثة</label>
+                            <input type="number" id="settingReward3" value="50" min="1" aria-label="نجوم المكافأة الثالثة">
+                        </div>
                     </div>
-                    <button class="btn btn-sm" onclick="saveSettings()"><i class="fas fa-save"></i> حفظ الإعدادات</button>
+                    <button class="btn btn-sm" onclick="saveSettings()" aria-label="حفظ الإعدادات"><i class="fas fa-save"></i> حفظ الإعدادات</button>
                 </div>
                 <div class="admin-card">
                     <h3><i class="fas fa-database"></i> إدارة البيانات</h3>
                     <div class="json-preview" id="dataPreview"></div>
                     <div style="display:flex;gap:10px;margin-top:15px;flex-wrap:wrap;">
-                        <button class="btn btn-sm btn-danger" onclick="clearAllData()"><i class="fas fa-trash"></i> مسح كل البيانات</button>
-                        <button class="btn btn-sm btn-info" onclick="loadDefaultData()"><i class="fas fa-undo"></i> استعادة البيانات الافتراضية</button>
+                        <button class="btn btn-sm btn-danger" onclick="clearAllData()" aria-label="مسح البيانات"><i class="fas fa-trash"></i> مسح كل البيانات</button>
+                        <button class="btn btn-sm btn-info" onclick="loadDefaultData()" aria-label="استعادة البيانات"><i class="fas fa-undo"></i> استعادة البيانات الافتراضية</button>
                     </div>
                 </div>
             </div>
@@ -388,165 +796,259 @@
         <header class="main-header" style="position:sticky;top:20px;z-index:100;">
             <div class="header-top-row">
                 <div class="brand-wrapper">
-                    <div class="logo">👶</div>
-                    <div><h1 id="displayChildName" style="font-size:16px;">أحمد</h1><div style="font-size:12px;color:#ffffffaa;">جلسة تدريب</div></div>
+                    <div class="logo" aria-hidden="true">👶</div>
+                    <div>
+                        <h1 id="displayChildName" style="font-size:16px;">أحمد</h1>
+                        <div style="font-size:12px;color:#ffffffaa;">جلسة تدريب</div>
+                    </div>
                 </div>
                 <div style="display:flex;align-items:center;gap:15px;">
-                    <div class="session-timer" id="sessionTimer">10:00</div>
-                    <div class="stars-badge"><span>⭐</span><span id="starCount">0</span></div>
-                    <button class="control-btn" onclick="showLanding()" title="العودة للرئيسية"><i class="fas fa-home"></i></button>
+                    <div class="session-timer" id="sessionTimer" aria-live="polite">10:00</div>
+                    <div class="stars-badge" aria-label="النجوم"><span>⭐</span><span id="starCount">0</span></div>
+                    <button class="control-btn" onclick="showLanding()" aria-label="العودة للرئيسية"><i class="fas fa-home"></i></button>
                 </div>
             </div>
         </header>
 
         <div class="container">
-            <div class="nav-tabs">
-                <button class="nav-tab active" onclick="switchTab('words',this)" id="tab-words"><i class="fas fa-images"></i> الكلمات</button>
-                <button class="nav-tab" onclick="switchTab('emotions',this)" id="tab-emotions"><i class="fas fa-smile"></i> المشاعر</button>
-                <button class="nav-tab" onclick="switchTab('instructions',this)" id="tab-instructions"><i class="fas fa-hand-pointer"></i> التعليمات</button>
-                <button class="nav-tab" onclick="switchTab('intraverbals',this)" id="tab-intraverbals"><i class="fas fa-comments"></i> محادثة</button>
-                <button class="nav-tab" onclick="switchTab('sequences',this)" id="tab-sequences"><i class="fas fa-sort-numeric-down"></i> تسلسل</button>
-                <button class="nav-tab" onclick="switchTab('categories',this)" id="tab-categories"><i class="fas fa-layer-group"></i> تصنيف</button>
-                <button class="nav-tab" onclick="switchTab('stories',this)" id="tab-stories"><i class="fas fa-book-open"></i> قصص</button>
-                <button class="nav-tab" onclick="switchTab('schedule',this)" id="tab-schedule"><i class="fas fa-calendar-check"></i> جدول</button>
-                <button class="nav-tab" onclick="switchTab('rewards',this)" id="tab-rewards"><i class="fas fa-trophy"></i> النجوم</button>
+            <!-- AI Chatbot Toggle -->
+            <div style="margin-bottom:15px;">
+                <button class="control-btn" onclick="toggleAIChatbot()" aria-label="فتح مساعد AI">
+                    <i class="fas fa-robot"></i> مساعد AI
+                </button>
+                <button class="control-btn" onclick="toggleCameraAI()" aria-label="فتح كاميرا AI">
+                    <i class="fas fa-camera"></i> كاميرا التعرف
+                </button>
+                <button class="control-btn" onclick="showRecommendations()" aria-label="التوصيات الذكية">
+                    <i class="fas fa-lightbulb"></i> توصيات لي
+                </button>
             </div>
 
-            <div id="panel-words">
-                <div class="mode-toggle">
-                    <button class="mode-btn active" onclick="setWordMode('tact',this)">🎤 ما هذا؟</button>
-                    <button class="mode-btn" onclick="setWordMode('mand',this)">🙋 أريد...</button>
+            <!-- AI Chatbot Panel -->
+            <div id="aiChatbotPanel" class="hidden" style="max-width:600px;margin:0 auto 20px auto;width:100%;">
+                <div class="admin-card">
+                    <h3><i class="fas fa-robot"></i> مساعد التوحد الذكي (Gemini AI)</h3>
+                    <div id="aiChatMessages" style="max-height:300px;overflow-y:auto;background:rgba(0,0,0,0.2);border-radius:10px;padding:15px;margin-bottom:10px;text-align:right;">
+                        <div style="margin-bottom:10px;padding:10px;background:rgba(0,212,255,0.1);border-radius:10px;border-right:3px solid var(--accent);">
+                            <strong style="color:var(--accent);">🤖 AI:</strong>
+                            <p style="margin:5px 0 0 0;color:#ffffffcc;">مرحباً! أنا مساعد التوحد الذكي. يمكنك سؤالي عن أي شيء يتعلق بالتوحد، ABA، أو نصائح للأهل. كيف يمكنني مساعدتك؟</p>
+                        </div>
+                    </div>
+                    <div style="display:flex;gap:10px;">
+                        <input type="text" id="aiChatInput" placeholder="اسألني أي شيء..." style="flex:1;margin:0;" aria-label="رسالة AI">
+                        <button class="btn btn-sm" onclick="sendAIChat()" aria-label="إرسال"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                    <div style="margin-top:10px;font-size:12px;color:#ffffffaa;">
+                        <label>مفتاح Gemini API (اختياري - يُحفظ محلياً):</label>
+                        <input type="password" id="geminiApiKey" placeholder="AIzaSy..." style="margin-top:5px;font-size:12px;" aria-label="مفتاح Gemini API">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Camera AI Panel -->
+            <div id="cameraAIPanel" class="hidden" style="max-width:600px;margin:0 auto 20px auto;width:100%;">
+                <div class="admin-card">
+                    <h3><i class="fas fa-camera"></i> كاميرا التعرف على الأشياء (TensorFlow.js)</h3>
+                    <div style="position:relative;width:100%;max-width:400px;margin:0 auto;">
+                        <video id="cameraVideo" autoplay playsinline style="width:100%;border-radius:15px;border:2px solid var(--accent);" aria-label="كاميرا"></video>
+                        <canvas id="cameraCanvas" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;"></canvas>
+                    </div>
+                    <div id="cameraPrediction" style="margin-top:10px;font-size:1.2rem;font-weight:700;color:var(--accent);text-align:center;">جاري تحميل النموذج...</div>
+                    <div style="display:flex;gap:10px;justify-content:center;margin-top:10px;">
+                        <button class="btn btn-sm" onclick="startCamera()" aria-label="تشغيل الكاميرا"><i class="fas fa-video"></i> تشغيل</button>
+                        <button class="btn btn-sm btn-danger" onclick="stopCamera()" aria-label="إيقاف الكاميرا"><i class="fas fa-stop"></i> إيقاف</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recommendations Panel -->
+            <div id="recommendationsPanel" class="hidden" style="max-width:600px;margin:0 auto 20px auto;width:100%;">
+                <div class="admin-card">
+                    <h3><i class="fas fa-lightbulb"></i> توصيات ذكية مخصصة</h3>
+                    <div id="recommendationsContent" style="text-align:right;">
+                        <p style="color:#ffffffaa;">ابدأ جلسة ليظهر التوصيات...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-tabs" role="tablist" aria-label="أقسام التدريب">
+                <button class="nav-tab active" onclick="switchTab('words',this)" id="tab-words" role="tab" aria-selected="true"><i class="fas fa-images"></i> الكلمات</button>
+                <button class="nav-tab" onclick="switchTab('emotions',this)" id="tab-emotions" role="tab" aria-selected="false"><i class="fas fa-smile"></i> المشاعر</button>
+                <button class="nav-tab" onclick="switchTab('instructions',this)" id="tab-instructions" role="tab" aria-selected="false"><i class="fas fa-hand-pointer"></i> التعليمات</button>
+                <button class="nav-tab" onclick="switchTab('intraverbals',this)" id="tab-intraverbals" role="tab" aria-selected="false"><i class="fas fa-comments"></i> محادثة</button>
+                <button class="nav-tab" onclick="switchTab('sequences',this)" id="tab-sequences" role="tab" aria-selected="false"><i class="fas fa-sort-numeric-down"></i> تسلسل</button>
+                <button class="nav-tab" onclick="switchTab('categories',this)" id="tab-categories" role="tab" aria-selected="false"><i class="fas fa-layer-group"></i> تصنيف</button>
+                <button class="nav-tab" onclick="switchTab('stories',this)" id="tab-stories" role="tab" aria-selected="false"><i class="fas fa-book-open"></i> قصص</button>
+                <button class="nav-tab" onclick="switchTab('schedule',this)" id="tab-schedule" role="tab" aria-selected="false"><i class="fas fa-calendar-check"></i> جدول</button>
+                <button class="nav-tab" onclick="switchTab('rewards',this)" id="tab-rewards" role="tab" aria-selected="false"><i class="fas fa-trophy"></i> النجوم</button>
+            </div>
+
+            <!-- WORDS PANEL -->
+            <div id="panel-words" role="tabpanel">
+                <div class="mode-toggle" role="radiogroup" aria-label="وضع الكلمات">
+                    <button class="mode-btn active" onclick="setWordMode('tact',this)" role="radio" aria-checked="true">🎤 ما هذا؟</button>
+                    <button class="mode-btn" onclick="setWordMode('mand',this)" role="radio" aria-checked="false">🙋 أريد...</button>
                 </div>
                 <div class="grid-3" id="wordsGrid"></div>
                 <div id="recordingArea" class="recording-area hidden">
-                    <div class="target-display" id="targetWordEmoji">🍎</div>
+                    <div class="target-display" id="targetWordEmoji" aria-hidden="true">🍎</div>
                     <div class="target-word" id="targetWordText">تفاحة</div>
                     <div class="prompt-text" id="promptText">قل: "تفاحة"</div>
                     <div style="display:flex;justify-content:center;gap:20px;align-items:center;">
-                        <button class="control-btn" onclick="speakPrompt()" style="width:60px;height:60px;border-radius:50%;font-size:20px;"><i class="fas fa-volume-up"></i></button>
-                        <button class="record-btn" id="recordBtn" onclick="toggleRecording()"><i class="fas fa-microphone"></i></button>
+                        <button class="control-btn" onclick="speakPrompt()" style="width:60px;height:60px;border-radius:50%;font-size:20px;" aria-label="استمع"><i class="fas fa-volume-up"></i></button>
+                        <button class="record-btn" id="recordBtn" onclick="toggleRecording()" aria-label="تسجيل صوتي"><i class="fas fa-microphone"></i></button>
                     </div>
-                    <div id="recordingIndicator" class="hidden">
-                        <div class="audio-wave"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+                    <div id="recordingIndicator" class="hidden" aria-live="polite">
+                        <div class="audio-wave" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
                         <p style="color:#ff4757;font-weight:700;">جاري التسجيل...</p>
                     </div>
                     <div id="evaluationArea" class="hidden">
                         <p style="color:#ffffffcc;margin-bottom:15px;">كيف كان أداء الطفل؟</p>
                         <div class="eval-grid">
-                            <button class="eval-btn success" onclick="evaluateAttempt('success')"><div style="font-size:2rem;margin-bottom:5px;">✅</div><div>صحيح</div></button>
-                            <button class="eval-btn partial" onclick="evaluateAttempt('partial')"><div style="font-size:2rem;margin-bottom:5px;">🤔</div><div>جزئي</div></button>
-                            <button class="eval-btn fail" onclick="evaluateAttempt('fail')"><div style="font-size:2rem;margin-bottom:5px;">❌</div><div>يحتاج تدريب</div></button>
+                            <button class="eval-btn success" onclick="evaluateAttempt('success')" aria-label="صحيح"><div style="font-size:2rem;margin-bottom:5px;" aria-hidden="true">✅</div><div>صحيح</div></button>
+                            <button class="eval-btn partial" onclick="evaluateAttempt('partial')" aria-label="جزئي"><div style="font-size:2rem;margin-bottom:5px;" aria-hidden="true">🤔</div><div>جزئي</div></button>
+                            <button class="eval-btn fail" onclick="evaluateAttempt('fail')" aria-label="يحتاج تدريب"><div style="font-size:2rem;margin-bottom:5px;" aria-hidden="true">❌</div><div>يحتاج تدريب</div></button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div id="panel-emotions" class="hidden">
+            <!-- EMOTIONS PANEL -->
+            <div id="panel-emotions" class="hidden" role="tabpanel">
                 <div class="recording-area" style="max-width:500px;margin:0 auto 20px auto;">
                     <h3 style="font-size:1.3rem;font-weight:700;margin-bottom:15px;color:white;">كيف يشعر هذا الطفل؟</h3>
-                    <div class="emotion-display" id="emotionImage">😢</div>
-                    <div id="emotionFeedback" class="hidden" style="font-size:1.2rem;font-weight:700;margin-bottom:15px;"></div>
+                    <div class="emotion-display" id="emotionImage" aria-label="مشاعر الطفل">😢</div>
+                    <div id="emotionFeedback" class="hidden" style="font-size:1.2rem;font-weight:700;margin-bottom:15px;" aria-live="polite"></div>
                 </div>
                 <div class="emoji-grid" id="emotionGrid"></div>
                 <div class="recording-area mt-4" style="max-width:500px;margin:20px auto 0 auto;">
                     <h3 style="font-size:1.3rem;font-weight:700;margin-bottom:15px;color:white;">كيف تشعر أنت الآن؟</h3>
                     <div style="display:flex;justify-content:center;gap:20px;flex-wrap:wrap;">
-                        <button class="emoji-btn" onclick="logSelfEmotion('happy')" style="font-size:3rem;padding:15px;">😊</button>
-                        <button class="emoji-btn" onclick="logSelfEmotion('sad')" style="font-size:3rem;padding:15px;">😢</button>
-                        <button class="emoji-btn" onclick="logSelfEmotion('angry')" style="font-size:3rem;padding:15px;">😠</button>
-                        <button class="emoji-btn" onclick="logSelfEmotion('calm')" style="font-size:3rem;padding:15px;">😌</button>
+                        <button class="emoji-btn" onclick="logSelfEmotion('happy')" style="font-size:3rem;padding:15px;" aria-label="سعيد">😊</button>
+                        <button class="emoji-btn" onclick="logSelfEmotion('sad')" style="font-size:3rem;padding:15px;" aria-label="حزين">😢</button>
+                        <button class="emoji-btn" onclick="logSelfEmotion('angry')" style="font-size:3rem;padding:15px;" aria-label="غاضب">😠</button>
+                        <button class="emoji-btn" onclick="logSelfEmotion('calm')" style="font-size:3rem;padding:15px;" aria-label="هادئ">😌</button>
                     </div>
                 </div>
             </div>
 
-            <div id="panel-instructions" class="hidden">
+            <!-- INSTRUCTIONS PANEL -->
+            <div id="panel-instructions" class="hidden" role="tabpanel">
                 <div class="instruction-card">
-                    <div class="instruction-icon" id="instructionIcon">👃</div>
+                    <div class="instruction-icon" id="instructionIcon" aria-hidden="true">👃</div>
                     <div class="instruction-text" id="instructionText">المس أنفك</div>
                 </div>
                 <div style="display:flex;gap:15px;justify-content:center;">
-                    <button class="control-btn" onclick="nextInstruction()"><i class="fas fa-random"></i> تعليمة أخرى</button>
-                    <button class="btn btn-play" onclick="markInstructionDone()"><i class="fas fa-check"></i> نفذها</button>
+                    <button class="control-btn" onclick="nextInstruction()" aria-label="تعليمة أخرى"><i class="fas fa-random"></i> تعليمة أخرى</button>
+                    <button class="btn btn-play" onclick="markInstructionDone()" aria-label="تم التنفيذ"><i class="fas fa-check"></i> نفذها</button>
                 </div>
             </div>
 
-            <div id="panel-intraverbals" class="hidden">
+            <!-- INTRAVERBALS PANEL -->
+            <div id="panel-intraverbals" class="hidden" role="tabpanel">
                 <div class="recording-area" style="max-width:600px;margin:0 auto;">
-                    <div style="font-size:3rem;margin-bottom:15px;">💬</div>
+                    <div style="font-size:3rem;margin-bottom:15px;" aria-hidden="true">💬</div>
                     <h3 style="font-size:1.5rem;font-weight:800;color:white;margin-bottom:10px;font-family:'Tajawal',sans-serif;" id="intraQuestion">ما اسمك؟</h3>
                     <p style="color:#ffffffcc;margin-bottom:20px;" id="intraHint">قل: اسمي ...</p>
                     <div style="display:flex;justify-content:center;gap:15px;margin-bottom:20px;">
-                        <button class="control-btn" onclick="speakIntraverbal()"><i class="fas fa-volume-up"></i> استمع للسؤال</button>
-                        <button class="record-btn" onclick="toggleRecording()"><i class="fas fa-microphone"></i></button>
+                        <button class="control-btn" onclick="speakIntraverbal()" aria-label="استمع للسؤال"><i class="fas fa-volume-up"></i> استمع للسؤال</button>
+                        <button class="record-btn" onclick="toggleRecording()" aria-label="تسجيل الإجابة"><i class="fas fa-microphone"></i></button>
                     </div>
                     <div id="intraEvaluation" class="hidden">
                         <p style="color:#ffffffcc;margin-bottom:15px;">الإجابة المتوقعة: <strong id="intraExpected" style="color:var(--accent);">اسمي أحمد</strong></p>
                         <div class="eval-grid">
-                            <button class="eval-btn success" onclick="evaluateIntraverbal('success')"><div style="font-size:2rem;margin-bottom:5px;">✅</div><div>صحيح</div></button>
-                            <button class="eval-btn partial" onclick="evaluateIntraverbal('partial')"><div style="font-size:2rem;margin-bottom:5px;">🤔</div><div>جزئي</div></button>
-                            <button class="eval-btn fail" onclick="evaluateIntraverbal('fail')"><div style="font-size:2rem;margin-bottom:5px;">❌</div><div>يحتاج تدريب</div></button>
+                            <button class="eval-btn success" onclick="evaluateIntraverbal('success')" aria-label="صحيح"><div style="font-size:2rem;margin-bottom:5px;" aria-hidden="true">✅</div><div>صحيح</div></button>
+                            <button class="eval-btn partial" onclick="evaluateIntraverbal('partial')" aria-label="جزئي"><div style="font-size:2rem;margin-bottom:5px;" aria-hidden="true">🤔</div><div>جزئي</div></button>
+                            <button class="eval-btn fail" onclick="evaluateIntraverbal('fail')" aria-label="يحتاج تدريب"><div style="font-size:2rem;margin-bottom:5px;" aria-hidden="true">❌</div><div>يحتاج تدريب</div></button>
                         </div>
                     </div>
                 </div>
-                <div style="margin-top:20px;"><button class="control-btn" onclick="nextIntraverbal()"><i class="fas fa-arrow-right"></i> سؤال آخر</button></div>
+                <div style="margin-top:20px;">
+                    <button class="control-btn" onclick="nextIntraverbal()" aria-label="سؤال آخر"><i class="fas fa-arrow-right"></i> سؤال آخر</button>
+                </div>
             </div>
 
-            <div id="panel-sequences" class="hidden">
+            <!-- SEQUENCES PANEL -->
+            <div id="panel-sequences" class="hidden" role="tabpanel">
                 <div id="sequenceContainer" style="max-width:700px;margin:0 auto;width:100%;">
                     <h3 style="font-size:1.3rem;font-weight:700;color:white;margin-bottom:20px;" id="sequenceTitle">رتب خطوات غسل اليدين</h3>
                     <div style="display:flex;gap:15px;justify-content:center;flex-wrap:wrap;margin-bottom:30px;" id="sequenceSlots"></div>
                     <div style="display:flex;gap:15px;justify-content:center;flex-wrap:wrap;" id="sequenceOptions"></div>
-                    <div id="sequenceFeedback" class="hidden" style="margin-top:20px;font-size:1.2rem;font-weight:700;"></div>
+                    <div id="sequenceFeedback" class="hidden" style="margin-top:20px;font-size:1.2rem;font-weight:700;" aria-live="polite"></div>
                 </div>
             </div>
 
-            <div id="panel-categories" class="hidden">
+            <!-- CATEGORIES PANEL -->
+            <div id="panel-categories" class="hidden" role="tabpanel">
                 <div id="categoryContainer" style="max-width:800px;margin:0 auto;width:100%;">
                     <h3 style="font-size:1.3rem;font-weight:700;color:white;margin-bottom:20px;" id="categoryTitle">أي من هذه حيوان؟</h3>
                     <div style="display:flex;gap:15px;justify-content:center;flex-wrap:wrap;margin-bottom:30px;" id="categoryItems"></div>
-                    <div id="categoryFeedback" class="hidden" style="font-size:1.2rem;font-weight:700;margin-top:20px;"></div>
+                    <div id="categoryFeedback" class="hidden" style="font-size:1.2rem;font-weight:700;margin-top:20px;" aria-live="polite"></div>
                 </div>
             </div>
 
-            <div id="panel-stories" class="hidden">
+            <!-- STORIES PANEL -->
+            <div id="panel-stories" class="hidden" role="tabpanel">
                 <div id="storiesContainer" style="max-width:700px;margin:0 auto;width:100%;"></div>
-                <div style="margin-top:20px;"><button class="control-btn" onclick="renderStories()"><i class="fas fa-redo"></i> عرض قصة أخرى</button></div>
+                <div style="margin-top:20px;">
+                    <button class="control-btn" onclick="renderStories()" aria-label="عرض قصة أخرى"><i class="fas fa-redo"></i> عرض قصة أخرى</button>
+                </div>
             </div>
 
-            <div id="panel-schedule" class="hidden">
+            <!-- SCHEDULE PANEL -->
+            <div id="panel-schedule" class="hidden" role="tabpanel">
                 <div style="max-width:600px;margin:0 auto;width:100%;">
                     <h3 style="font-size:1.3rem;font-weight:700;color:white;margin-bottom:20px;"><i class="fas fa-calendar-day"></i> جدول أنشطة اليوم</h3>
                     <div id="scheduleContainer"></div>
                     <div id="scheduleComplete" class="hidden" style="margin-top:20px;padding:20px;background:rgba(16,185,129,0.2);border:1px solid #10b981;border-radius:15px;">
-                        <div style="font-size:3rem;margin-bottom:10px;">🎉</div>
+                        <div style="font-size:3rem;margin-bottom:10px;" aria-hidden="true">🎉</div>
                         <h4 style="color:#34d399;font-size:1.3rem;font-weight:800;">أكملت جميع الأنشطة!</h4>
                     </div>
                 </div>
             </div>
 
-            <div id="panel-rewards" class="hidden">
+            <!-- REWARDS PANEL -->
+            <div id="panel-rewards" class="hidden" role="tabpanel">
                 <div class="stars-display" id="totalStars">0</div>
                 <h3 style="font-size:1.2rem;font-weight:700;color:#ffffffcc;margin-bottom:20px;">مجموع نجومك</h3>
                 <div style="max-width:400px;margin:0 auto;width:100%;">
-                    <div class="progress-item"><span style="font-size:1.5rem;">🎯</span><div style="flex:1;"><div style="display:flex;justify-content:space-between;margin-bottom:5px;"><span style="font-weight:700;">5 نجوم</span><span style="color:#ffffffaa;font-size:13px;">رائع!</span></div><div class="progress-bar"><div id="progress5" class="progress-fill" style="width:0%;background:#fbbf24;"></div></div></div></div>
-                    <div class="progress-item"><span style="font-size:1.5rem;">🏆</span><div style="flex:1;"><div style="display:flex;justify-content:space-between;margin-bottom:5px;"><span style="font-weight:700;">20 نجمة</span><span style="color:#ffffffaa;font-size:13px;">بطل اليوم</span></div><div class="progress-bar"><div id="progress20" class="progress-fill" style="width:0%;background:#a78bfa;"></div></div></div></div>
-                    <div class="progress-item"><span style="font-size:1.5rem;">🎁</span><div style="flex:1;"><div style="display:flex;justify-content:space-between;margin-bottom:5px;"><span style="font-weight:700;">50 نجمة</span><span style="color:#ffffffaa;font-size:13px;">مفاجأة كبيرة</span></div><div class="progress-bar"><div id="progress50" class="progress-fill" style="width:0%;background:#f472b6;"></div></div></div></div>
+                    <div class="progress-item">
+                        <span style="font-size:1.5rem;" aria-hidden="true">🎯</span>
+                        <div style="flex:1;">
+                            <div style="display:flex;justify-content:space-between;margin-bottom:5px;"><span style="font-weight:700;">5 نجوم</span><span style="color:#ffffffaa;font-size:13px;">رائع!</span></div>
+                            <div class="progress-bar"><div id="progress5" class="progress-fill" style="width:0%;background:#fbbf24;"></div></div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <span style="font-size:1.5rem;" aria-hidden="true">🏆</span>
+                        <div style="flex:1;">
+                            <div style="display:flex;justify-content:space-between;margin-bottom:5px;"><span style="font-weight:700;">20 نجمة</span><span style="color:#ffffffaa;font-size:13px;">بطل اليوم</span></div>
+                            <div class="progress-bar"><div id="progress20" class="progress-fill" style="width:0%;background:#a78bfa;"></div></div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <span style="font-size:1.5rem;" aria-hidden="true">🎁</span>
+                        <div style="flex:1;">
+                            <div style="display:flex;justify-content:space-between;margin-bottom:5px;"><span style="font-weight:700;">50 نجمة</span><span style="color:#ffffffaa;font-size:13px;">مفاجأة كبيرة</span></div>
+                            <div class="progress-bar"><div id="progress50" class="progress-fill" style="width:0%;background:#f472b6;"></div></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div id="sessionEndModal" class="modal-overlay hidden">
+        <div id="sessionEndModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="sessionEndTitle">
             <div class="modal-content">
-                <div style="font-size:4rem;margin-bottom:15px;">🎉</div>
-                <h3 style="font-size:2rem;font-weight:800;color:white;margin-bottom:10px;">انتهت الجلسة!</h3>
+                <div style="font-size:4rem;margin-bottom:15px;" aria-hidden="true">🎉</div>
+                <h3 id="sessionEndTitle" style="font-size:2rem;font-weight:800;color:white;margin-bottom:10px;">انتهت الجلسة!</h3>
                 <p style="color:#ffffffcc;margin-bottom:20px;">أحسنت اليوم</p>
                 <div style="background:rgba(251,191,36,0.2);border:1px solid rgba(251,191,36,0.4);border-radius:15px;padding:20px;margin-bottom:20px;">
                     <div style="font-size:3rem;font-weight:900;color:#fbbf24;" id="sessionStars">0</div>
                     <div style="color:#fbbf24;font-weight:700;">نجمة محصل عليها</div>
                 </div>
                 <div style="display:flex;flex-direction:column;gap:10px;">
-                    <button class="btn" onclick="location.reload()" style="width:100%;"><i class="fas fa-redo"></i> جلسة جديدة</button>
-                    <button class="control-btn" onclick="showParentDashboard()" style="width:100%;"><i class="fas fa-chart-line"></i> لوحة الوالدين</button>
+                    <button class="btn" onclick="location.reload()" style="width:100%;" aria-label="جلسة جديدة"><i class="fas fa-redo"></i> جلسة جديدة</button>
+                    <button class="control-btn" onclick="showParentDashboard()" style="width:100%;" aria-label="لوحة الوالدين"><i class="fas fa-chart-line"></i> لوحة الوالدين</button>
                 </div>
             </div>
         </div>
@@ -556,8 +1058,8 @@
     <div id="parentDashboard" class="hidden">
         <header class="main-header">
             <div class="header-top-row">
-                <div class="brand-wrapper"><div class="logo">📊</div><h1>لوحة متابعة الوالدين</h1></div>
-                <button class="control-btn" onclick="showLanding()"><i class="fas fa-arrow-right"></i> </button>
+                <div class="brand-wrapper"><div class="logo" aria-hidden="true">📊</div><h1>لوحة متابعة الوالدين</h1></div>
+                <button class="control-btn" onclick="showLanding()" aria-label="العودة للرئيسية"><i class="fas fa-arrow-right"></i> </button>
             </div>
         </header>
         <div class="container">
@@ -587,17 +1089,289 @@
             </div>
         </div>
         <footer>
-            <a class="btn" href="mailto:kwalloman@gmail.com?subject=feedback" style="margin-bottom:15px;"><i class="fas fa-envelope"></i> تواصل معنا عبر البريد الإلكتروني</a>
+            <a class="btn" href="mailto:kwalloman@gmail.com?subject=feedback" style="margin-bottom:15px;" aria-label="تواصل معنا"><i class="fas fa-envelope"></i> تواصل معنا عبر البريد الإلكتروني</a>
             <div class="social">
-                <a href="https://x.com/kwall_oman" target="_blank"><i class="fab fa-x-twitter"></i></a>
-                <a href="https://www.instagram.com/kwalloman" target="_blank"><i class="fab fa-instagram"></i></a>
-                <a href="https://youtube.com/@kwalloman" target="_blank"><i class="fab fa-youtube"></i></a>
-                <a href="https://www.tiktok.com/@knowledge.wall" target="_blank"><i class="fab fa-tiktok"></i></a>
-                <a href="https://www.snapchat.com/add/kwalloman" target="_blank"><i class="fab fa-snapchat"></i></a>
+                <a href="https://x.com/kwall_oman" target="_blank" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
+                <a href="https://www.instagram.com/kwalloman" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://youtube.com/@kwalloman" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                <a href="https://www.tiktok.com/@knowledge.wall" target="_blank" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                <a href="https://www.snapchat.com/add/kwalloman" target="_blank" aria-label="Snapchat"><i class="fab fa-snapchat"></i></a>
             </div>
         </footer>
     </div>
 
-    <script src="script.js"></script>
+    <script src="script.js">
+
+/* ==================== SITE RATING SYSTEM - GOOGLE SHEETS BACKEND ==================== */
+
+const RATING_API_URL = 'https://script.google.com/macros/s/AKfycbw42w1QJmVNgKq4VYq8qIP7sASfYGESt9porhb5FzJkYn7SvO3FGf-Tc2y4-u0rWA/exec';
+
+const USER_RATED_KEY = 'autism_ai_user_rated_v2';
+const USER_ID_KEY = 'autism_ai_user_id';
+
+function generateUserId() {
+    const id = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    localStorage.setItem(USER_ID_KEY, id);
+    return id;
+}
+
+function getUserId() {
+    return localStorage.getItem(USER_ID_KEY) || generateUserId();
+}
+
+function hasUserRated() {
+    return localStorage.getItem(USER_RATED_KEY) === 'true';
+}
+
+function setUserRated() {
+    localStorage.setItem(USER_RATED_KEY, 'true');
+}
+
+// Submit rating to Google Sheets
+async function submitRating(stars) {
+    if (hasUserRated()) {
+        showRatingToast('لقد قيّمت الموقع مسبقاً! شكراً لك 🙏');
+        return;
+    }
+
+    // Highlight selected stars
+    const starBtns = document.querySelectorAll('.rating-star-btn');
+    starBtns.forEach((btn, idx) => {
+        if (idx < stars) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+
+    window.tempRating = stars;
+    document.getElementById('ratingDetails').classList.remove('hidden');
+    document.getElementById('ratingDetails').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function toggleTag(btn) {
+    btn.classList.toggle('active');
+}
+
+async function submitRatingDetails() {
+    const stars = window.tempRating || 0;
+    const comment = document.getElementById('ratingComment').value.trim();
+    const tags = Array.from(document.querySelectorAll('.rating-tag.active')).map(t => t.textContent.trim());
+
+    if (stars === 0) return;
+
+    // Show loading
+    const submitBtn = document.querySelector('.rating-submit-btn');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
+    submitBtn.disabled = true;
+
+    try {
+        // Send to Google Sheets
+        const response = await fetch(RATING_API_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                stars: stars,
+                comment: comment,
+                tags: tags,
+                userId: getUserId(),
+                userAgent: navigator.userAgent,
+                page: window.location.href,
+                language: navigator.language,
+                timestamp: new Date().toISOString()
+            })
+        });
+
+        // Save locally too as backup
+        saveLocalRating({ stars, comment, tags, timestamp: new Date().toISOString() });
+        setUserRated();
+
+        // Hide input, show feedback
+        document.getElementById('ratingStarsInput').classList.add('hidden');
+        document.getElementById('ratingDetails').classList.add('hidden');
+        document.getElementById('ratingFeedback').classList.remove('hidden');
+
+        // Refresh stats from server
+        await fetchRatingStats();
+
+        // Celebration
+        createConfetti();
+        showRatingToast('شكراً لتقييمك! ⭐ تم الحفظ بنجاح');
+
+        // Analytics
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'site_rating', { value: stars });
+        }
+
+    } catch (err) {
+        console.error('Rating error:', err);
+        // Fallback: save locally
+        saveLocalRating({ stars, comment, tags, timestamp: new Date().toISOString() });
+        setUserRated();
+
+        document.getElementById('ratingStarsInput').classList.add('hidden');
+        document.getElementById('ratingDetails').classList.add('hidden');
+        document.getElementById('ratingFeedback').classList.remove('hidden');
+        updateRatingDisplay();
+        createConfetti();
+        showRatingToast('تم حفظ التقييم محلياً ✅');
+    } finally {
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    }
+}
+
+// Local backup storage
+function saveLocalRating(rating) {
+    try {
+        const data = JSON.parse(localStorage.getItem('autism_ai_local_ratings') || '[]');
+        data.push(rating);
+        localStorage.setItem('autism_ai_local_ratings', JSON.stringify(data));
+    } catch(e) {}
+}
+
+// Fetch real stats from Google Sheets
+async function fetchRatingStats() {
+    try {
+        // Try to fetch from Google Sheets (using JSONP approach for CORS)
+        const script = document.createElement('script');
+        const callbackName = 'ratingCallback_' + Date.now();
+
+        window[callbackName] = function(data) {
+            if (data && data.success) {
+                updateRatingDisplayFromServer(data);
+            }
+            delete window[callbackName];
+            if (script.parentNode) script.parentNode.removeChild(script);
+        };
+
+        script.src = RATING_API_URL + '?callback=' + callbackName + '&_=' + Date.now();
+        script.onerror = () => {
+            delete window[callbackName];
+            if (script.parentNode) script.parentNode.removeChild(script);
+            updateRatingDisplay(); // fallback to local
+        };
+
+        // Timeout fallback
+        setTimeout(() => {
+            if (window[callbackName]) {
+                delete window[callbackName];
+                if (script.parentNode) script.parentNode.removeChild(script);
+                updateRatingDisplay();
+            }
+        }, 5000);
+
+        document.head.appendChild(script);
+
+    } catch (err) {
+        console.log('Using local ratings:', err);
+        updateRatingDisplay();
+    }
+}
+
+// Update display from server data
+function updateRatingDisplayFromServer(data) {
+    const avg = parseFloat(data.average) || 0;
+    const count = parseInt(data.count) || 0;
+    const distribution = data.distribution || [0,0,0,0,0];
+
+    document.getElementById('ratingAvg').textContent = avg.toFixed(1);
+    document.getElementById('ratingCount').textContent = count;
+
+    const maxCount = Math.max(...distribution, 1);
+    for (let i = 1; i <= 5; i++) {
+        const bar = document.getElementById('bar' + i);
+        const countEl = document.getElementById('count' + i);
+        if (bar && countEl) {
+            bar.style.width = (distribution[i-1] / maxCount * 100) + '%';
+            countEl.textContent = distribution[i-1];
+        }
+    }
+
+    // Update hero stats too if element exists
+    const heroCount = document.getElementById('heroRatingCount');
+    if (heroCount) heroCount.textContent = count;
+}
+
+// Update display from local data (fallback)
+function updateRatingDisplay() {
+    try {
+        const data = JSON.parse(localStorage.getItem('autism_ai_local_ratings') || '[]');
+        if (data.length === 0) return;
+
+        const avg = data.reduce((a, b) => a + (b.stars || 0), 0) / data.length;
+        const count = data.length;
+        const distribution = [0, 0, 0, 0, 0];
+        data.forEach(r => { if (r.stars >= 1 && r.stars <= 5) distribution[r.stars - 1]++; });
+
+        document.getElementById('ratingAvg').textContent = avg.toFixed(1);
+        document.getElementById('ratingCount').textContent = count;
+
+        const maxCount = Math.max(...distribution, 1);
+        for (let i = 1; i <= 5; i++) {
+            const bar = document.getElementById('bar' + i);
+            const countEl = document.getElementById('count' + i);
+            if (bar && countEl) {
+                bar.style.width = (distribution[i-1] / maxCount * 100) + '%';
+                countEl.textContent = distribution[i-1];
+            }
+        }
+    } catch(e) {}
+}
+
+function showRatingToast(message) {
+    const existing = document.querySelector('.rating-toast');
+    if (existing) existing.remove();
+
+    const toast = document.createElement('div');
+    toast.className = 'rating-toast';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+        toast.style.animation = 'toastOut 0.3s ease forwards';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    // Fetch real stats first
+    fetchRatingStats();
+
+    // Check if user already rated
+    if (hasUserRated()) {
+        const starsInput = document.getElementById('ratingStarsInput');
+        const feedback = document.getElementById('ratingFeedback');
+        const details = document.getElementById('ratingDetails');
+        if (starsInput) starsInput.classList.add('hidden');
+        if (details) details.classList.add('hidden');
+        if (feedback) feedback.classList.remove('hidden');
+    }
+});
+
+// Star hover effects
+document.querySelectorAll('.rating-star-btn').forEach((btn, idx) => {
+    btn.addEventListener('mouseenter', () => {
+        if (hasUserRated()) return;
+        document.querySelectorAll('.rating-star-btn').forEach((b, i) => {
+            b.classList.toggle('hover', i <= idx);
+        });
+    });
+});
+
+document.getElementById('ratingStarsInput')?.addEventListener('mouseleave', () => {
+    document.querySelectorAll('.rating-star-btn').forEach(b => b.classList.remove('hover'));
+});
+
+// Periodic refresh of stats (every 30 seconds)
+setInterval(() => {
+    if (!document.hidden) {
+        fetchRatingStats();
+    }
+}, 30000);
+</script>
 </body>
 </html>
