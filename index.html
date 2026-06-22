@@ -1095,16 +1095,17 @@
     </div>
 
     <script src="script.js"></script>
-<!-- ==================== FIXED SITE RATING SYSTEM ==================== -->
+<!-- ==================== BULLETPROOF SITE RATING SYSTEM ==================== -->
 <script>
-/* ==================== SITE RATING SYSTEM - CLEAN VERSION ==================== */
+/* ==================== SITE RATING SYSTEM v3 - WORKS WITH GOOGLE SHEETS ==================== */
 
 (function() {
     'use strict';
 
-    const RATING_API_URL = 'https://script.google.com/macros/s/AKfycbwPgCLu13S_lMMpleB6ej8GGbRDL_KgjTKrwgNvqO0pZ-lA6ZwvH4WL2i7IuvTSHY4/exec';
-    const USER_RATED_KEY = 'autism_ai_user_rated_v2';
-    const RATINGS_KEY = 'autism_ai_local_ratings';
+    // ⚠️ ضع رابط Web App الجديد هنا بعد نشره
+    const RATING_API_URL = 'https://script.google.com/macros/s/AKfycbwkzshZRPJ_Nh-V7vtK0t7SesZ0Sc3AxtRTPj-sarjw_IF0laTgI4ZqMhEUefCJwiw/exec';
+    const USER_RATED_KEY = 'autism_ai_user_rated_v3';
+    const RATINGS_KEY = 'autism_ai_local_ratings_v3';
 
     // ===== Utility Functions =====
     function hasUserRated() {
@@ -1141,22 +1142,26 @@
         const toast = document.createElement('div');
         toast.className = 'rating-toast';
         toast.textContent = msg;
-        toast.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.85);color:#fff;padding:14px 28px;border-radius:12px;font-size:14px;z-index:9999;animation:toastIn 0.3s ease;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);';
+        toast.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.9);color:#fff;padding:14px 28px;border-radius:12px;font-size:14px;z-index:99999;animation:toastIn 0.3s ease;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);font-family:Cairo,sans-serif;white-space:nowrap;';
         document.body.appendChild(toast);
 
         setTimeout(function() {
             toast.style.animation = 'toastOut 0.3s ease forwards';
-            setTimeout(function() { toast.remove(); }, 300);
+            setTimeout(function() { if(toast.parentNode) toast.remove(); }, 300);
         }, duration);
     }
 
     function createConfetti() {
-        const colors = ['#fbbf24', '#34d399', '#60a5fa', '#f472b6', '#a78bfa'];
-        for (let i = 0; i < 30; i++) {
+        const colors = ['#fbbf24', '#34d399', '#60a5fa', '#f472b6', '#a78bfa', '#fb7185'];
+        for (let i = 0; i < 40; i++) {
             const conf = document.createElement('div');
-            conf.style.cssText = 'position:fixed;width:8px;height:8px;border-radius:50%;background:' + colors[Math.floor(Math.random()*colors.length)] + ';left:' + (Math.random()*100) + 'vw;top:-10px;z-index:9999;animation:confettiFall ' + (1+Math.random()*2) + 's linear forwards;';
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const left = Math.random() * 100;
+            const duration = 1.5 + Math.random() * 2;
+            const size = 6 + Math.random() * 8;
+            conf.style.cssText = 'position:fixed;width:' + size + 'px;height:' + size + 'px;border-radius:50%;background:' + color + ';left:' + left + 'vw;top:-20px;z-index:99999;pointer-events:none;animation:confettiFall ' + duration + 's linear forwards;';
             document.body.appendChild(conf);
-            setTimeout(function() { conf.remove(); }, 3000);
+            setTimeout(function() { if(conf.parentNode) conf.remove(); }, duration * 1000);
         }
     }
 
@@ -1193,14 +1198,80 @@
         }
     }
 
-    // ===== Submit Rating =====
+    // ===== Submit to Google Sheets via Form/Iframe (CORS-proof) =====
+    function submitToGoogleSheets(ratingData, onComplete) {
+        // Method 1: Try fetch with text/plain (works if GAS handles it)
+        try {
+            fetch(RATING_API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify(ratingData),
+                redirect: 'follow'
+            }).then(function() {
+                console.log('Rating sent to Google Sheets (fetch)');
+                if (onComplete) onComplete(true);
+            }).catch(function() {
+                // Method 2: Fallback to iframe form submission
+                submitViaIframe(ratingData, onComplete);
+            });
+        } catch(e) {
+            submitViaIframe(ratingData, onComplete);
+        }
+    }
+
+    function submitViaIframe(data, onComplete) {
+        // Create a hidden form and submit via iframe (completely CORS-proof)
+        var formId = 'ratingForm_' + Date.now();
+        var iframeId = 'ratingIframe_' + Date.now();
+
+        var iframe = document.createElement('iframe');
+        iframe.name = iframeId;
+        iframe.id = iframeId;
+        iframe.style.display = 'none';
+        document.body.appendChild(iframe);
+
+        var form = document.createElement('form');
+        form.method = 'POST';
+        form.action = RATING_API_URL;
+        form.target = iframeId;
+        form.style.display = 'none';
+
+        // Add data as form fields
+        var fields = {
+            stars: data.stars,
+            comment: data.comment || '',
+            tags: (data.tags || []).join(', '),
+            timestamp: data.timestamp,
+            source: 'autism-ai-website'
+        };
+
+        for (var key in fields) {
+            var input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = key;
+            input.value = fields[key];
+            form.appendChild(input);
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+
+        // Cleanup and callback
+        setTimeout(function() {
+            if (form.parentNode) form.remove();
+            if (iframe.parentNode) iframe.remove();
+            console.log('Rating submitted via iframe form');
+            if (onComplete) onComplete(true);
+        }, 2000);
+    }
+
+    // ===== Submit Rating (Star Selection) =====
     window.submitRating = function(stars) {
         if (hasUserRated()) {
             showToast('لقد قيّمت الموقع مسبقاً! شكراً لك 🙏');
             return;
         }
 
-        // Highlight selected stars
         document.querySelectorAll('.rating-star-btn').forEach(function(btn, idx) {
             btn.classList.toggle('active', idx < stars);
         });
@@ -1233,56 +1304,41 @@
             btn.disabled = true;
         }
 
-        // Save locally FIRST (always works)
-        saveLocalRating({
+        var ratingData = {
             stars: stars,
             comment: comment,
             tags: tags,
             timestamp: new Date().toISOString()
-        });
+        };
+
+        // Save locally FIRST
+        saveLocalRating(ratingData);
         setUserRated();
 
-        // Try to send to Google Sheets (best effort, no-cors)
-        try {
-            fetch(RATING_API_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                body: JSON.stringify({
-                    stars: stars,
-                    comment: comment,
-                    tags: tags,
-                    timestamp: new Date().toISOString()
-                })
-            }).catch(function(e) {
-                console.log('Google Sheets sync skipped (no-cors mode)');
-            });
-        } catch(e) {
-            console.log('Google Sheets sync failed:', e);
-        }
+        // Send to Google Sheets
+        submitToGoogleSheets(ratingData, function(success) {
+            // Update UI
+            var starsInput = document.getElementById('ratingStarsInput');
+            var details = document.getElementById('ratingDetails');
+            var feedback = document.getElementById('ratingFeedback');
 
-        // Update UI
-        var starsInput = document.getElementById('ratingStarsInput');
-        var details = document.getElementById('ratingDetails');
-        var feedback = document.getElementById('ratingFeedback');
+            if (starsInput) starsInput.classList.add('hidden');
+            if (details) details.classList.add('hidden');
+            if (feedback) feedback.classList.remove('hidden');
 
-        if (starsInput) starsInput.classList.add('hidden');
-        if (details) details.classList.add('hidden');
-        if (feedback) feedback.classList.remove('hidden');
+            updateDisplay();
+            createConfetti();
+            showToast('شكراً لتقييمك! ⭐ تم الحفظ بنجاح');
 
-        updateDisplay();
-        createConfetti();
-        showToast('شكراً لتقييمك! ⭐ تم الحفظ بنجاح');
+            if (btn) {
+                btn.innerHTML = '<i class="fas fa-paper-plane"></i> إرسال التقييم';
+                btn.disabled = false;
+            }
 
-        if (btn) {
-            btn.innerHTML = '<i class="fas fa-paper-plane"></i> إرسال التقييم';
-            btn.disabled = false;
-        }
-
-        // Analytics
-        if (typeof gtag !== 'undefined') {
-            gtag('event', 'site_rating', { value: stars });
-        }
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'site_rating', { value: stars });
+            }
+        });
     };
 
     // ===== Initialize =====
@@ -1324,8 +1380,9 @@
         @keyframes toastIn { from { opacity:0; transform:translateX(-50%) translateY(20px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }
         @keyframes toastOut { from { opacity:1; transform:translateX(-50%) translateY(0); } to { opacity:0; transform:translateX(-50%) translateY(20px); } }
         @keyframes confettiFall { 0% { transform:translateY(0) rotate(0deg); opacity:1; } 100% { transform:translateY(100vh) rotate(720deg); opacity:0; } }
-        .rating-star-btn { transition: all 0.2s ease; cursor: pointer; }
+        .rating-star-btn { transition: all 0.2s ease; cursor: pointer; background:none; border:none; font-size:2.5rem; color:#ffffff55; padding:0 5px; }
         .rating-star-btn.active, .rating-star-btn.hover { color: #fbbf24; transform: scale(1.2); }
+        .rating-tag { transition: all 0.2s ease; cursor: pointer; }
         .rating-tag.active { background: var(--accent); color: white; border-color: var(--accent); }
     `;
     document.head.appendChild(style);
