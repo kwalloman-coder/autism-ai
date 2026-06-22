@@ -1095,17 +1095,17 @@
     </div>
 
     <script src="script.js"></script>
-<!-- ==================== BULLETPROOF SITE RATING SYSTEM ==================== -->
+<script src="script.js"></script>
+<!-- ==================== BULLETPROOF SITE RATING SYSTEM v4 ==================== -->
 <script>
-/* ==================== SITE RATING SYSTEM v3 - WORKS WITH GOOGLE SHEETS ==================== */
+/* ==================== SITE RATING SYSTEM v4 - READS FROM GOOGLE SHEETS ==================== */
 
 (function() {
     'use strict';
 
-    // ⚠️ ضع رابط Web App الجديد هنا بعد نشره
-    const RATING_API_URL = 'https://script.google.com/macros/s/AKfycbwkzshZRPJ_Nh-V7vtK0t7SesZ0Sc3AxtRTPj-sarjw_IF0laTgI4ZqMhEUefCJwiw/exec';
-    const USER_RATED_KEY = 'autism_ai_user_rated_v3';
-    const RATINGS_KEY = 'autism_ai_local_ratings_v3';
+    const RATING_API_URL = 'https://script.google.com/macros/s/AKfycbwPgCLu13S_lMMpleB6ej8GGbRDL_KgjTKrwgNvqO0pZ-lA6ZwvH4WL2i7IuvTSHY4/exec';
+    const USER_RATED_KEY = 'autism_ai_user_rated_v4';
+    const RATINGS_KEY = 'autism_ai_local_ratings_v4';
 
     // ===== Utility Functions =====
     function hasUserRated() {
@@ -1165,31 +1165,76 @@
         }
     }
 
-    // ===== Update Display =====
-    function updateDisplay() {
+    // ===== Fetch Stats from Google Sheets (Server) =====
+    function fetchServerStats(callback) {
         try {
-            const data = getLocalRatings();
-            if (data.length === 0) return;
-
-            const avg = data.reduce(function(a, b) { return a + (b.stars || 0); }, 0) / data.length;
-            const count = data.length;
-            const dist = [0, 0, 0, 0, 0];
-            data.forEach(function(r) {
-                if (r.stars >= 1 && r.stars <= 5) dist[r.stars - 1]++;
+            fetch(RATING_API_URL + '?_=' + Date.now(), {
+                method: 'GET',
+                redirect: 'follow'
+            })
+            .then(function(response) { return response.json(); })
+            .then(function(data) {
+                if (data && data.success) {
+                    console.log('Server stats:', data);
+                    if (callback) callback(data);
+                } else {
+                    console.log('Server returned error:', data);
+                    if (callback) callback(null);
+                }
+            })
+            .catch(function(err) {
+                console.log('Failed to fetch server stats:', err);
+                if (callback) callback(null);
             });
+        } catch(e) {
+            console.log('Error fetching stats:', e);
+            if (callback) callback(null);
+        }
+    }
 
-            const avgEl = document.getElementById('ratingAvg');
-            const countEl = document.getElementById('ratingCount');
-            const heroCountEl = document.getElementById('heroRatingCount');
+    // ===== Update Display (from server data + local backup) =====
+    function updateDisplay(serverData) {
+        try {
+            var count = 0;
+            var avg = 0;
+            var dist = [0, 0, 0, 0, 0];
 
-            if (avgEl) avgEl.textContent = avg.toFixed(1);
+            // Priority 1: Use server data if available
+            if (serverData && serverData.success) {
+                count = parseInt(serverData.count) || 0;
+                avg = parseFloat(serverData.average) || 0;
+                var serverDist = serverData.distribution || [0,0,0,0,0];
+                for (var i = 0; i < 5; i++) {
+                    dist[i] = parseInt(serverDist[i]) || 0;
+                }
+                console.log('Displaying server stats:', count, 'ratings, avg:', avg);
+            }
+            // Priority 2: Fallback to local data
+            else {
+                var localData = getLocalRatings();
+                if (localData.length === 0) return;
+                count = localData.length;
+                avg = localData.reduce(function(a, b) { return a + (b.stars || 0); }, 0) / count;
+                localData.forEach(function(r) {
+                    if (r.stars >= 1 && r.stars <= 5) dist[r.stars - 1]++;
+                });
+                console.log('Displaying local stats:', count, 'ratings');
+            }
+
+            // Update DOM elements
+            var avgEl = document.getElementById('ratingAvg');
+            var countEl = document.getElementById('ratingCount');
+            var heroCountEl = document.getElementById('heroRatingCount');
+
+            if (avgEl) avgEl.textContent = count > 0 ? avg.toFixed(1) : '--';
             if (countEl) countEl.textContent = count;
             if (heroCountEl) heroCountEl.textContent = count;
 
-            const max = Math.max.apply(null, dist.concat([1]));
-            for (let i = 1; i <= 5; i++) {
-                const bar = document.getElementById('bar' + i);
-                const cnt = document.getElementById('count' + i);
+            // Update bars
+            var max = Math.max.apply(null, dist.concat([1]));
+            for (var i = 1; i <= 5; i++) {
+                var bar = document.getElementById('bar' + i);
+                var cnt = document.getElementById('count' + i);
                 if (bar) bar.style.width = (dist[i-1] / max * 100) + '%';
                 if (cnt) cnt.textContent = dist[i-1];
             }
@@ -1200,7 +1245,7 @@
 
     // ===== Submit to Google Sheets via Form/Iframe (CORS-proof) =====
     function submitToGoogleSheets(ratingData, onComplete) {
-        // Method 1: Try fetch with text/plain (works if GAS handles it)
+        // Method 1: Try fetch with text/plain
         try {
             fetch(RATING_API_URL, {
                 method: 'POST',
@@ -1211,7 +1256,6 @@
                 console.log('Rating sent to Google Sheets (fetch)');
                 if (onComplete) onComplete(true);
             }).catch(function() {
-                // Method 2: Fallback to iframe form submission
                 submitViaIframe(ratingData, onComplete);
             });
         } catch(e) {
@@ -1220,7 +1264,6 @@
     }
 
     function submitViaIframe(data, onComplete) {
-        // Create a hidden form and submit via iframe (completely CORS-proof)
         var formId = 'ratingForm_' + Date.now();
         var iframeId = 'ratingIframe_' + Date.now();
 
@@ -1236,7 +1279,6 @@
         form.target = iframeId;
         form.style.display = 'none';
 
-        // Add data as form fields
         var fields = {
             stars: data.stars,
             comment: data.comment || '',
@@ -1256,7 +1298,6 @@
         document.body.appendChild(form);
         form.submit();
 
-        // Cleanup and callback
         setTimeout(function() {
             if (form.parentNode) form.remove();
             if (iframe.parentNode) iframe.remove();
@@ -1311,7 +1352,7 @@
             timestamp: new Date().toISOString()
         };
 
-        // Save locally FIRST
+        // Save locally
         saveLocalRating(ratingData);
         setUserRated();
 
@@ -1326,7 +1367,11 @@
             if (details) details.classList.add('hidden');
             if (feedback) feedback.classList.remove('hidden');
 
-            updateDisplay();
+            // Refresh from server to show updated stats
+            fetchServerStats(function(serverData) {
+                updateDisplay(serverData);
+            });
+
             createConfetti();
             showToast('شكراً لتقييمك! ⭐ تم الحفظ بنجاح');
 
@@ -1343,8 +1388,12 @@
 
     // ===== Initialize =====
     function initRating() {
-        updateDisplay();
+        // First, try to load stats from server
+        fetchServerStats(function(serverData) {
+            updateDisplay(serverData);
+        });
 
+        // Check if user already rated
         if (hasUserRated()) {
             var starsInput = document.getElementById('ratingStarsInput');
             var details = document.getElementById('ratingDetails');
