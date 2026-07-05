@@ -13,6 +13,35 @@
     --info: #3b82f6;
     --landing-bg: linear-gradient(135deg, #020024, #090979, #00d4ff);
 }
+/* ✅ قائمة البرجر - تظهر فقط في الموبايل */
+@media (max-width: 768px) {
+    .nav-links {
+        position: fixed;
+        top: 70px;
+        right: -100%;
+        width: 80%;
+        max-width: 300px;
+        height: calc(100vh - 70px);
+        background: rgba(2, 0, 36, 0.95);
+        backdrop-filter: blur(20px);
+        flex-direction: column;
+        padding: 30px 20px;
+        gap: 15px;
+        transition: right 0.4s ease;
+        z-index: 999;
+        border-left: 1px solid var(--glass-border);
+    }
+    
+    /* ✅ عند تفعيل checkbox تظهر القائمة */
+    .menu-checkbox:checked ~ .nav-links {
+        right: 0;
+    }
+    
+    .nav-mobile-toggle {
+        display: flex !important;
+        cursor: pointer;
+    }
+}
 
 body.dark-mode{
     --glass-bg: rgba(20,20,20,0.45);
@@ -64,6 +93,9 @@ body {
     transition: 0.4s ease;
     overflow-x: hidden;
     line-height: 1.6;
+}
+.hidden { 
+    display: none !important; 
 }
 
 .hex-pattern {

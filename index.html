@@ -100,26 +100,33 @@
     <!-- ==================== LANDING PAGE ==================== -->
     <div id="landingPage">
         <!-- Navigation -->
-        <nav class="landing-nav" role="navigation" aria-label="التنقل الرئيسي">
-            <div class="nav-brand">
-                <a href="https://www.kwalloman.com" aria-label="Kwall Oman">
-                    <img src="logoKwall.png" alt="شعار Kwall Oman" class="nav-logo" loading="lazy">
-                </a>
-                <span class="nav-title">مساعد التوحد الذكي</span>
-            </div>
-            <div class="nav-links">
-                <a href="#features" class="nav-link">المميزات</a>
-                <a href="#how-it-works" class="nav-link">كيف يعمل</a>
-                <a href="#pricing" class="nav-link">الأسعار</a>
-                <a href="blog.html" class="nav-link">المدونة</a>
-                <a href="about.html" class="nav-link">من نحن</a>
-                <a href="faq.html" class="nav-link">الأسئلة</a>
-                <button class="nav-cta" onclick="showApp()">ابدأ الآن مجاناً</button>
-            </div>
-            <button class="nav-mobile-toggle" aria-label="فتح القائمة" onclick="toggleMobileNav()">
-                <i class="fas fa-bars"></i>
-            </button>
-        </nav>
+<!-- Navigation -->
+<nav class="landing-nav" role="navigation" aria-label="التنقل الرئيسي">
+    <div class="nav-brand">
+        <a href="https://www.kwalloman.com" aria-label="Kwall Oman">
+            <img src="logoKwall.png" alt="شعار Kwall Oman" class="nav-logo" loading="lazy">
+        </a>
+        <span class="nav-title">مساعد التوحد الذكي</span>
+    </div>
+    
+    <!-- ✅ Checkbox hack for mobile menu -->
+    <input type="checkbox" id="menu-toggle" class="menu-checkbox" hidden>
+    
+    <div class="nav-links" id="navLinks">
+        <a href="#features" class="nav-link" onclick="document.getElementById('menu-toggle').checked=false">المميزات</a>
+        <a href="#how-it-works" class="nav-link" onclick="document.getElementById('menu-toggle').checked=false">كيف يعمل</a>
+        <a href="#pricing" class="nav-link" onclick="document.getElementById('menu-toggle').checked=false">الأسعار</a>
+        <a href="blog.html" class="nav-link" onclick="document.getElementById('menu-toggle').checked=false">المدونة</a>
+        <a href="about.html" class="nav-link" onclick="document.getElementById('menu-toggle').checked=false">من نحن</a>
+        <a href="faq.html" class="nav-link" onclick="document.getElementById('menu-toggle').checked=false">الأسئلة</a>
+        <button class="nav-cta" onclick="showApp();document.getElementById('menu-toggle').checked=false">ابدأ الآن مجاناً</button>
+    </div>
+    
+    <!-- ✅ Label acts as hamburger button -->
+    <label for="menu-toggle" class="nav-mobile-toggle" aria-label="فتح القائمة">
+        <i class="fas fa-bars"></i>
+    </label>
+</nav>
 
         <!-- Hero Section -->
         <section class="hero" role="banner" aria-label="القسم الرئيسي">
@@ -538,12 +545,10 @@
     <!-- ==================== APP SCREEN ==================== -->
     <div id="appScreen" class="hidden">
         <button class="settings-btn" onclick="showAdminLogin()" title="إدارة المحتوى" aria-label="إدارة المحتوى">⚙️</button>
-
         <header class="main-header" id="main-content">
             <div class="header-top-row">
                 <div class="brand-wrapper">
                                  <button class="control-btn" onclick="showLanding()" aria-label="العودة للصفحة الرئيسية"><i class="fas fa-home"></i></button>
-                        </a>
                     </div>
                     <h1>مساعد التوحد الذكي</h1>
                 </div>
@@ -593,7 +598,7 @@
                 </div>
                 <button class="logo" onclick="backToApp()" aria-label="العودة"><i class="fas fa-arrow-right"></i></button>
             </div>  
-            <div style="subtitle">
+            <div class="subtitle">
                 <div style="display:flex;gap:10px;">
                     <button class="control-btn" onclick="exportData()" aria-label="حفظ البيانات"><i class="fas fa-download"></i> حفظ</button>
                     <button class="control-btn" onclick="document.getElementById('importFile').click()" aria-label="استيراد البيانات"><i class="fas fa-upload"></i> استيراد</button>
@@ -1095,8 +1100,6 @@
     </div>
 
     <script src="script.js"></script>
-<script src="script.js"></script>
-<!-- ==================== BULLETPROOF SITE RATING SYSTEM v4 ==================== -->
 <script>
 /* ==================== SITE RATING SYSTEM v4 - READS FROM GOOGLE SHEETS ==================== */
 
@@ -1444,6 +1447,47 @@
     }
 
 })();
+function fetchServerStats(callback) {
+    fetch(RATING_API_URL + '?action=getStats&_=' + Date.now(), {
+        method: 'GET',
+        redirect: 'follow'
+    })
+    .then(function(response) {
+        if (!response.ok) throw new Error('HTTP ' + response.status);
+        return response.json();
+    })
+    .then(function(data) {
+        if (data && data.success) {
+            console.log('✅ Server stats loaded:', data);
+            callback(data);
+        } else {
+            console.warn('⚠️ Server returned invalid data:', data);
+            callback(null);
+        }
+    })
+    .catch(function(err) {
+        console.error('❌ Failed to fetch server stats:', err);
+        // أظهر للمستخدم أنه في وضع "غير متصل"
+        var countEl = document.getElementById('ratingCount');
+        if (countEl) countEl.textContent = '⚠️';
+        callback(null);
+    });
+}
+fetch(RATING_API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(ratingData),
+    redirect: 'follow'
+})
+.then(function(response) {
+    if (!response.ok) throw new Error('HTTP ' + response.status);
+    console.log('✅ Rating sent to Google Sheets');
+    if (onComplete) onComplete(true);
+})
+.catch(function(err) {
+    console.error('❌ Fetch failed, trying iframe:', err);
+    submitViaIframe(ratingData, onComplete);
+});
 </script>
 </body>
 </html>
