@@ -1489,5 +1489,23 @@ fetch(RATING_API_URL, {
     submitViaIframe(ratingData, onComplete);
 });
 </script>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.hero-stat-number[data-count]').forEach(function(el) {
+        var target = parseInt(el.getAttribute('data-count')) || 0;
+        var duration = 1500;
+        var start = 0;
+        var step = Math.ceil(target / (duration / 16));
+        var timer = setInterval(function() {
+            start += step;
+            if (start >= target) {
+                start = target;
+                clearInterval(timer);
+            }
+            el.textContent = start;
+        }, 16);
+    });
+});
+</script>
 </body>
 </html>
